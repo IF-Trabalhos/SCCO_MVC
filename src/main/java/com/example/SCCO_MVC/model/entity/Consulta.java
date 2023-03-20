@@ -24,8 +24,8 @@ public class Consulta {
     @OneToOne
     private Dentista dentista;
 
-    @OneToMany
-    private List<Procedimento> procedimentos;
+    @OneToOne
+    private Tratamento tratamento;
 
     private double valorConsulta;
     private Date data;
