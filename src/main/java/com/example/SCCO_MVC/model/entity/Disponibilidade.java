@@ -21,6 +21,4 @@ public class Disponibilidade {
     private Time horaInicialIntervalo;
     private Time horaFinalIntervalo;
 
-    @OneToMany
-    private List<Dia> dia;
 }

@@ -16,6 +16,4 @@ public class Tratamento {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany
-    private List<Procedimento> procedimentos;
 }

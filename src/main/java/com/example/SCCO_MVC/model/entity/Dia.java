@@ -20,4 +20,7 @@ public class Dia {
     private Time horaInicial;
     private Time horaFinal;
 
+    @ManyToOne
+    private Disponibilidade disponibilidade;
+
 }

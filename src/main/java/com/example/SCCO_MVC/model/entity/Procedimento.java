@@ -22,4 +22,6 @@ public class Procedimento {
 
     @ManyToOne
     private Especialidade especialidade;
+    @ManyToOne
+    private Tratamento tratamento;
 }
