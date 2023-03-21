@@ -21,4 +21,7 @@ public class Agenda {
 
     private double Faturamento;
 
+    @OneToOne
+    private Disponibilidade disponibilidade;
+
 }
