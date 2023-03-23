@@ -1,6 +1,5 @@
 package com.example.SCCO_MVC.api.dto;
 
-import com.example.SCCO_MVC.model.entity.Paciente;
 import com.example.SCCO_MVC.model.entity.Procedimento;
 import org.modelmapper.ModelMapper;
 

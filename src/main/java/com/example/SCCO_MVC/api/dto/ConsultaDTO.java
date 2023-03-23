@@ -1,7 +1,6 @@
 package com.example.SCCO_MVC.api.dto;
 
 import com.example.SCCO_MVC.model.entity.Consulta;
-import com.example.SCCO_MVC.model.entity.Paciente;
 import org.modelmapper.ModelMapper;
 
 import java.sql.Time;
