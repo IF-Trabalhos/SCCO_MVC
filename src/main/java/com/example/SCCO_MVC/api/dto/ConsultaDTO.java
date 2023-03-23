@@ -12,14 +12,14 @@ public class ConsultaDTO {
     private Long dentistaId;
     private Long tratamento;
 
-    private double valorConsulta;
+    private Double valorConsulta;
     private Date data;
     private Time horaInicio;
     private Time horaFim;
+    private Long agendaId;
 
     public static ConsultaDTO create(Consulta consulta){
         ModelMapper modelMapper = new ModelMapper();
-        ConsultaDTO dto = modelMapper.map(consulta, ConsultaDTO.class);
-        return dto;
+        return modelMapper.map(consulta, ConsultaDTO.class);
     }
 }

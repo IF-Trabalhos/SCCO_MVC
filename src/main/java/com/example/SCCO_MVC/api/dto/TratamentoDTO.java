@@ -8,7 +8,6 @@ public class TratamentoDTO {
 
     public static TratamentoDTO create(Tratamento tratamento){
         ModelMapper modelMapper = new ModelMapper();
-        TratamentoDTO dto = modelMapper.map(tratamento, TratamentoDTO.class);
-        return dto;
+        return modelMapper.map(tratamento, TratamentoDTO.class);
     }
 }

@@ -14,7 +14,6 @@ public class ProcedimentoDTO {
 
     public static ProcedimentoDTO create(Procedimento procedimento){
         ModelMapper modelMapper = new ModelMapper();
-        ProcedimentoDTO dto = modelMapper.map(procedimento, ProcedimentoDTO.class);
-        return dto;
+        return modelMapper.map(procedimento, ProcedimentoDTO.class);
     }
 }

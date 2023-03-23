@@ -10,7 +10,6 @@ public class EspecialidadeDTO {
 
     public static EspecialidadeDTO create(Especialidade especialidade){
         ModelMapper modelMapper = new ModelMapper();
-        EspecialidadeDTO dto = modelMapper.map(especialidade, EspecialidadeDTO.class);
-        return dto;
+        return modelMapper.map(especialidade, EspecialidadeDTO.class);
     }
 }

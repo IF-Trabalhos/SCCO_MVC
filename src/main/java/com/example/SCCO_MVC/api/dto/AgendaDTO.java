@@ -14,7 +14,6 @@ public class AgendaDTO {
 
     public static AgendaDTO create(Agenda agenda){
         ModelMapper modelMapper = new ModelMapper();
-        AgendaDTO dto = modelMapper.map(agenda, AgendaDTO.class);
-        return dto;
+        return modelMapper.map(agenda, AgendaDTO.class);
     }
 }

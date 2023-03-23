@@ -15,8 +15,7 @@ public class DisponibilidadeDTO {
 
     public static DisponibilidadeDTO create(Disponibilidade disponibilidade){
         ModelMapper modelMapper = new ModelMapper();
-        DisponibilidadeDTO dto = modelMapper.map(disponibilidade, DisponibilidadeDTO.class);
-        return dto;
+        return modelMapper.map(disponibilidade, DisponibilidadeDTO.class);
     }
 }
 

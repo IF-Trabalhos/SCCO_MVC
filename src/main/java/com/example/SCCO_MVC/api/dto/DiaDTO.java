@@ -19,7 +19,6 @@ public class DiaDTO {
 
     public static DiaDTO create(Dia dia){
         ModelMapper modelMapper = new ModelMapper();
-        DiaDTO dto = modelMapper.map(dia, DiaDTO.class);
-        return dto;
+        return modelMapper.map(dia, DiaDTO.class);
     }
 }
