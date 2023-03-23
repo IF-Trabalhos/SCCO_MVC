@@ -27,6 +27,9 @@ public class Consulta {
     @OneToOne
     private Tratamento tratamento;
 
+    @ManyToOne
+    private Agenda agenda;
+
     private double valorConsulta;
     private Date data;
     private Time horaInicio;

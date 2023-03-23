@@ -12,6 +12,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 
 public class Secretaria extends Pessoa{
-    private double salario;
+    private Double salario;
     private String pis;
 }
