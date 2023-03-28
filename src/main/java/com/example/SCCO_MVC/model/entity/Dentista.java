@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 
 public class Dentista extends Pessoa {
 
-    private int cro;
+    private String cro;
     private String agenda;
 
     @ManyToOne
