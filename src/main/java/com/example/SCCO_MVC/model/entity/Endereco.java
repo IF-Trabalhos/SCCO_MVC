@@ -23,7 +23,7 @@ public class Endereco {
     private String bairro;
     private String uf;
     private String cidade;
-    private int numero;
+    private Integer numero;
     private String complemento;
     private String cep;
 

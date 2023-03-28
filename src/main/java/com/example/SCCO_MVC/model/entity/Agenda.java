@@ -16,10 +16,7 @@ public class Agenda {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany
-    private List<Consulta> consultas;
-
-    private double Faturamento;
+    private Double faturamento;
 
     @OneToOne
     private Disponibilidade disponibilidade;
