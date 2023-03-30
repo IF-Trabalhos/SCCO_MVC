@@ -40,7 +40,7 @@ public class AgendaService {
     public void validar(Agenda agenda){
         if (agenda.getDisponibilidade() == null || agenda.getDisponibilidade().getId() == null
                 || agenda.getDisponibilidade().getId() == 0) {
-            throw new RegraNegocioException("Especialidade invalida");
+            throw new RegraNegocioException("Disponibilidade invalida");
         }
     }
 }
