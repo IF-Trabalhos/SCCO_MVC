@@ -1,8 +1,14 @@
 package com.example.SCCO_MVC.api.dto;
 
 import com.example.SCCO_MVC.model.entity.Paciente;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class PacienteDTO {
     private Long id;
     private String nome;
@@ -19,6 +25,7 @@ public class PacienteDTO {
     public static PacienteDTO create(Paciente paciente){
         ModelMapper modelMapper = new ModelMapper();
         PacienteDTO dto = modelMapper.map(paciente, PacienteDTO.class);
+
         dto.logradouro = paciente.getEndereco().getLogradouro();
         dto.bairro = paciente.getEndereco().getBairro();
         dto.uf = paciente.getEndereco().getUf();

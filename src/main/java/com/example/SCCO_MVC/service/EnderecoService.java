@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 public class EnderecoService {
     private EnderecoRepository repository;
 
-    private EnderecoService(EnderecoRepository repository){
+    public EnderecoService(EnderecoRepository repository){
         this.repository = repository;
     }
     @Transactional

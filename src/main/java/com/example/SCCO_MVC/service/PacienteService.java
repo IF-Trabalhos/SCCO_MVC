@@ -15,12 +15,12 @@ import java.util.Objects;
 public class PacienteService {
     private PacienteRepository repository;
 
-    private PacienteService(PacienteRepository repository) {
+    public PacienteService(PacienteRepository repository) {
         this.repository = repository;
 
     }
 
-    private List<Paciente> getPacientes() {
+    public List<Paciente> getPacientes() {
         return this.repository.findAll();
     }
 
