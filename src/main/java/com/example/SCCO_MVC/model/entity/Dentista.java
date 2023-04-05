@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 public class Dentista extends Pessoa {
 
     private Integer cro;
-    private String agenda;
 
     @ManyToOne
     private Especialidade especialidade;

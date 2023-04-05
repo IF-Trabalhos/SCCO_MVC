@@ -17,8 +17,8 @@ public class Procedimento {
     private Long id;
 
     private String nome;
-    private boolean status;
-    private double valor;
+    private Boolean status;
+    private Double valor;
 
     @ManyToOne
     private Especialidade especialidade;
