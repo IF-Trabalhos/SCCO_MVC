@@ -1,4 +1,4 @@
-package com.example.SCCO_MVC.api.dto.controller;
+package com.example.SCCO_MVC.api.controller;
 
 
 import com.example.SCCO_MVC.api.dto.PacienteDTO;
