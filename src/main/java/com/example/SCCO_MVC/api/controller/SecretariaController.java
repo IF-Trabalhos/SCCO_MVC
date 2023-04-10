@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/secretaria")
+@RequestMapping("/api/v1/secretarias")
 @RequiredArgsConstructor
 public class SecretariaController {
     private final SecretariaService service;
