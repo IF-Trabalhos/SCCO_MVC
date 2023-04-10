@@ -4,11 +4,13 @@ import com.example.SCCO_MVC.exception.RegraNegocioException;
 import com.example.SCCO_MVC.model.entity.Dentista;
 import com.example.SCCO_MVC.model.repository.DentistaRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+@Service
 public class DentistaService {
 
     private DentistaRepository repository;
@@ -18,7 +20,7 @@ public class DentistaService {
     }
 
     public List<Dentista> getDentistas(){
-        return repository.findAll();
+        return this.repository.findAll();
     }
 
     public Optional<Dentista> getDentistaById(Long id){
