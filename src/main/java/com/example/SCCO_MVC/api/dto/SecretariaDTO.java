@@ -1,8 +1,14 @@
 package com.example.SCCO_MVC.api.dto;
 
 import com.example.SCCO_MVC.model.entity.Secretaria;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class SecretariaDTO {
     private Long id;
     private String nome;
