@@ -1,10 +1,16 @@
 package com.example.SCCO_MVC.api.dto;
 
 import com.example.SCCO_MVC.model.entity.Disponibilidade;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 
 import java.sql.Time;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class DisponibilidadeDTO {
     private Long id;
     private Time horaInicialIntervalo;

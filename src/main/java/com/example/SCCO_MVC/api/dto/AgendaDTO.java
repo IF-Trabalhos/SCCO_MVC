@@ -1,8 +1,14 @@
 package com.example.SCCO_MVC.api.dto;
 
 import com.example.SCCO_MVC.model.entity.Agenda;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class AgendaDTO {
     private Long id;
     private Double faturamento;
