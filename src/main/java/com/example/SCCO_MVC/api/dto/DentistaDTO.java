@@ -13,7 +13,7 @@ public class DentistaDTO {
     private String cidade;
     private String complemento;
     private String cep;
-    private Integer numero;
+    private String numero;
 
     public static DentistaDTO create(Dentista dentista){
         ModelMapper modelMapper = new ModelMapper();

@@ -14,7 +14,7 @@ public class SecretariaDTO {
     private String cidade;
     private String complemento;
     private String cep;
-    private Integer numero;
+    private String numero;
     public static SecretariaDTO create(Secretaria secretatia){
         ModelMapper modelMapper = new ModelMapper();
         SecretariaDTO dto = modelMapper.map(secretatia, SecretariaDTO.class);
