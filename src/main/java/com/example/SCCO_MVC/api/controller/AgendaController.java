@@ -23,7 +23,7 @@ public class AgendaController {
     private final AgendaService service;
     @GetMapping()
     public ResponseEntity get(){
-        List<Agenda> dias = service.getAgendas();
-        return ResponseEntity.ok(dias.stream().map(AgendaDTO::create).collect(Collectors.toList()));
+        List<Agenda> agendas = service.getAgendas();
+        return ResponseEntity.ok(agendas.stream().map(AgendaDTO::create).collect(Collectors.toList()));
     }
 }
