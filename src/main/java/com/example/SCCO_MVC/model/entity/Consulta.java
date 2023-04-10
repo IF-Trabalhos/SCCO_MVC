@@ -30,7 +30,7 @@ public class Consulta {
     @ManyToOne
     private Agenda agenda;
 
-    private double valorConsulta;
+    private Double valorConsulta;
     private Date data;
     private Time horaInicio;
     private Time horaFim;

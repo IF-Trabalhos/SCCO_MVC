@@ -21,4 +21,7 @@ public class Agenda {
     @OneToOne
     private Disponibilidade disponibilidade;
 
+    @OneToOne
+    private Dentista dentista;
+
 }
