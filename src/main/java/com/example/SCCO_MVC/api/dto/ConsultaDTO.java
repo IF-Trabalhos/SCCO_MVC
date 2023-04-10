@@ -10,7 +10,7 @@ public class ConsultaDTO {
     private Long id;
     private Long pacienteId;
     private Long dentistaId;
-    private Long tratamento;
+    private Long tratamentoId;
 
     private Double valorConsulta;
     private Date data;

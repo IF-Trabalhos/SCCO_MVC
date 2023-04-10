@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @RequestMapping("api/v1/especialidades")
 @RequiredArgsConstructor
 public class EspecialidadeController {
-    private EspecialidadeService service;
+    private final EspecialidadeService service;
 
     @GetMapping()
     public ResponseEntity get(){
