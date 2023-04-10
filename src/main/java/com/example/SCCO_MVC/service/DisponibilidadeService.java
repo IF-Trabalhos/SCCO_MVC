@@ -4,11 +4,13 @@ import com.example.SCCO_MVC.exception.RegraNegocioException;
 import com.example.SCCO_MVC.model.entity.Disponibilidade;
 import com.example.SCCO_MVC.model.repository.DisponibilidadeRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+@Service
 public class DisponibilidadeService {
 
     private DisponibilidadeRepository repository;
@@ -18,23 +20,23 @@ public class DisponibilidadeService {
     }
 
     public List<Disponibilidade> getDisponibilidades(){
-        return repository.findAll();
+        return this.repository.findAll();
     }
 
     public Optional<Disponibilidade> getDisponibilidadeById(Long id){
-        return repository.findById(id);
+        return this.repository.findById(id);
     }
 
     @Transactional
     public Disponibilidade salvar(Disponibilidade disponibilidade){
         validar(disponibilidade);
-        return repository.save(disponibilidade);
+        return this.repository.save(disponibilidade);
     }
 
     @Transactional
     public void excluir(Disponibilidade disponibilidade){
         Objects.requireNonNull(disponibilidade.getId());
-        repository.delete(disponibilidade);
+        this.repository.delete(disponibilidade);
     }
 
     public void validar(Disponibilidade disponibilidade){

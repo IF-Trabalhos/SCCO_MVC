@@ -4,11 +4,13 @@ import com.example.SCCO_MVC.exception.RegraNegocioException;
 import com.example.SCCO_MVC.model.entity.Dia;
 import com.example.SCCO_MVC.model.repository.DiaRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+@Service
 public class DiaService {
 
     private DiaRepository repository;
@@ -18,23 +20,23 @@ public class DiaService {
     }
 
     public List<Dia> getDias(){
-        return repository.findAll();
+        return this.repository.findAll();
     }
 
     public Optional<Dia> getDiaById(Long id){
-        return repository.findById(id);
+        return this.repository.findById(id);
     }
 
     @Transactional
     public Dia salvar(Dia dia){
         validar(dia);
-        return repository.save(dia);
+        return this.repository.save(dia);
     }
 
     @Transactional
     public void excluir(Dia dia){
         Objects.requireNonNull(dia.getId());
-        repository.delete(dia);
+        this.repository.delete(dia);
     }
 
     public void validar(Dia dia){

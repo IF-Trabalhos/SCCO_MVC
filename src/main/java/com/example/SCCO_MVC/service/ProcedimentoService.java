@@ -4,11 +4,13 @@ import com.example.SCCO_MVC.exception.RegraNegocioException;
 import com.example.SCCO_MVC.model.entity.Procedimento;
 import com.example.SCCO_MVC.model.repository.ProcedimentoRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+@Service
 public class ProcedimentoService {
 
     private ProcedimentoRepository repository;
@@ -18,23 +20,23 @@ public class ProcedimentoService {
     }
 
     public List<Procedimento> getProcedimentos(){
-        return repository.findAll();
+        return this.repository.findAll();
     }
 
     public Optional<Procedimento> getProcedimentoById(Long id){
-        return repository.findById(id);
+        return this.repository.findById(id);
     }
 
     @Transactional
     public Procedimento salvar(Procedimento procedimento){
         validar(procedimento);
-        return repository.save(procedimento);
+        return this.repository.save(procedimento);
     }
 
     @Transactional
     public void excluir(Procedimento procedimento){
         Objects.requireNonNull(procedimento.getId());
-        repository.delete(procedimento);
+        this.repository.delete(procedimento);
     }
 
     public void validar(Procedimento procedimento){

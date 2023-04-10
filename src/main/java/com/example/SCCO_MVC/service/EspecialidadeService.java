@@ -4,11 +4,13 @@ import com.example.SCCO_MVC.exception.RegraNegocioException;
 import com.example.SCCO_MVC.model.entity.Especialidade;
 import com.example.SCCO_MVC.model.repository.EspecialidadeRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+@Service
 public class EspecialidadeService {
 
     private EspecialidadeRepository repository;
@@ -18,23 +20,23 @@ public class EspecialidadeService {
     }
 
     public List<Especialidade> getEspecialidades(){
-        return repository.findAll();
+        return this.repository.findAll();
     }
 
     public Optional<Especialidade> getEspecialidadeById(Long id){
-        return repository.findById(id);
+        return this.repository.findById(id);
     }
 
     @Transactional
     public Especialidade salvar(Especialidade especialidade){
         validar(especialidade);
-        return repository.save(especialidade);
+        return this.repository.save(especialidade);
     }
 
     @Transactional
     public void excluir(Especialidade especialidade){
         Objects.requireNonNull(especialidade.getId());
-        repository.delete(especialidade);
+        this.repository.delete(especialidade);
     }
 
     public void validar(Especialidade especialidade){

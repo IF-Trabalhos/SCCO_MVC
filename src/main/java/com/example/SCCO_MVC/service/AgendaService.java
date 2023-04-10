@@ -4,11 +4,13 @@ import com.example.SCCO_MVC.exception.RegraNegocioException;
 import com.example.SCCO_MVC.model.entity.Agenda;
 import com.example.SCCO_MVC.model.repository.AgendaRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+@Service
 public class AgendaService {
 
     private AgendaRepository repository;
@@ -18,23 +20,23 @@ public class AgendaService {
     }
 
     public List<Agenda> getAgendas(){
-        return repository.findAll();
+        return this.repository.findAll();
     }
 
     public Optional<Agenda> getAgendaById(Long id){
-        return repository.findById(id);
+        return this.repository.findById(id);
     }
 
     @Transactional
     public Agenda salvar(Agenda agenda){
         validar(agenda);
-        return repository.save(agenda);
+        return this.repository.save(agenda);
     }
 
     @Transactional
     public void excluir(Agenda agenda){
         Objects.requireNonNull(agenda.getId());
-        repository.delete(agenda);
+        this.repository.delete(agenda);
     }
 
     public void validar(Agenda agenda){

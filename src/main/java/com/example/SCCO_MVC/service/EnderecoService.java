@@ -16,7 +16,7 @@ public class EnderecoService {
     @Transactional
     private Endereco Salvar(Endereco endereco){
         validar(endereco);
-        return repository.save(endereco);
+        return this.repository.save(endereco);
     }
     private void validar(Endereco endereco){
         if (endereco.getLogradouro() == null || endereco.getLogradouro().trim().equals("")
