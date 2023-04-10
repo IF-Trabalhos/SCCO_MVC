@@ -3,11 +3,13 @@ package com.example.SCCO_MVC.service;
 import com.example.SCCO_MVC.model.entity.Tratamento;
 import com.example.SCCO_MVC.model.repository.TratamentoRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+@Service
 public class TratamentoService {
 
     private TratamentoRepository repository;
@@ -17,21 +19,21 @@ public class TratamentoService {
     }
 
     public List<Tratamento> getTratamentos(){
-        return repository.findAll();
+        return this.repository.findAll();
     }
 
     public Optional<Tratamento> getTratamentoById(Long id){
-        return repository.findById(id);
+        return this.repository.findById(id);
     }
 
     @Transactional
     public Tratamento salvar(Tratamento tratamento){
-        return repository.save(tratamento);
+        return this.repository.save(tratamento);
     }
 
     @Transactional
     public void excluir(Tratamento tratamento){
         Objects.requireNonNull(tratamento.getId());
-        repository.delete(tratamento);
+        this.repository.delete(tratamento);
     }
 }

@@ -24,19 +24,19 @@ public class DentistaService {
     }
 
     public Optional<Dentista> getDentistaById(Long id){
-        return repository.findById(id);
+        return this.repository.findById(id);
     }
 
     @Transactional
     public Dentista salvar(Dentista dentista){
         validar(dentista);
-        return repository.save(dentista);
+        return this.repository.save(dentista);
     }
 
     @Transactional
     public void excluir(Dentista dentista){
         Objects.requireNonNull(dentista.getId());
-        repository.delete(dentista);
+        this.repository.delete(dentista);
     }
 
     public void validar(Dentista dentista){

@@ -25,7 +25,7 @@ public class PacienteService {
     @Transactional
     public Paciente salvar(Paciente paciente) {
         validar(paciente);
-        return repository.save(paciente);
+        return this.repository.save(paciente);
     }
 
     @Transactional
