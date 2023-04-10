@@ -10,13 +10,13 @@ import org.springframework.stereotype.Service;
 public class EnderecoService {
     private EnderecoRepository repository;
 
-    private EnderecoService(EnderecoRepository repository){
+    public EnderecoService(EnderecoRepository repository){
         this.repository = repository;
     }
     @Transactional
     private Endereco Salvar(Endereco endereco){
         validar(endereco);
-        return repository.save(endereco);
+        return this.repository.save(endereco);
     }
     private void validar(Endereco endereco){
         if (endereco.getLogradouro() == null || endereco.getLogradouro().trim().equals("")

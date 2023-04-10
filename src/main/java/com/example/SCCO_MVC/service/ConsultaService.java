@@ -4,11 +4,13 @@ import com.example.SCCO_MVC.exception.RegraNegocioException;
 import com.example.SCCO_MVC.model.entity.Consulta;
 import com.example.SCCO_MVC.model.repository.ConsultaRepository;
 import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+@Service
 public class ConsultaService {
 
     private ConsultaRepository repository;
@@ -18,23 +20,23 @@ public class ConsultaService {
     }
 
     public List<Consulta> getConsultas(){
-        return repository.findAll();
+        return this.repository.findAll();
     }
 
     public Optional<Consulta> getConsultaById(Long id){
-        return repository.findById(id);
+        return this.repository.findById(id);
     }
 
     @Transactional
     public Consulta salvar(Consulta consulta){
         validar(consulta);
-        return repository.save(consulta);
+        return this.repository.save(consulta);
     }
 
     @Transactional
     public void excluir(Consulta consulta){
         Objects.requireNonNull(consulta.getId());
-        repository.delete(consulta);
+        this.repository.delete(consulta);
     }
 
     public void validar(Consulta consulta){

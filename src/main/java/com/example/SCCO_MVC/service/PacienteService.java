@@ -1,8 +1,6 @@
 package com.example.SCCO_MVC.service;
 import com.example.SCCO_MVC.exception.RegraNegocioException;
-import com.example.SCCO_MVC.model.entity.Endereco;
 import com.example.SCCO_MVC.model.entity.Paciente;
-import com.example.SCCO_MVC.model.repository.EnderecoRepository;
 import com.example.SCCO_MVC.model.repository.PacienteRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -15,19 +13,19 @@ import java.util.Objects;
 public class PacienteService {
     private PacienteRepository repository;
 
-    private PacienteService(PacienteRepository repository) {
+    public PacienteService(PacienteRepository repository) {
         this.repository = repository;
 
     }
 
-    private List<Paciente> getPacientes() {
+    public List<Paciente> getPacientes() {
         return this.repository.findAll();
     }
 
     @Transactional
     public Paciente salvar(Paciente paciente) {
         validar(paciente);
-        return repository.save(paciente);
+        return this.repository.save(paciente);
     }
 
     @Transactional
