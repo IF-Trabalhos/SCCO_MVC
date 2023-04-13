@@ -1,5 +1,6 @@
 package com.example.SCCO_MVC.service;
 import com.example.SCCO_MVC.exception.RegraNegocioException;
+import com.example.SCCO_MVC.model.entity.Dentista;
 import com.example.SCCO_MVC.model.entity.Paciente;
 import com.example.SCCO_MVC.model.repository.PacienteRepository;
 import jakarta.transaction.Transactional;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 
 @Service
@@ -22,6 +24,10 @@ public class PacienteService {
         return this.repository.findAll();
     }
 
+
+    public Optional<Paciente> getPacienteById(Long id){
+        return this.repository.findById(id);
+    }
     @Transactional
     public Paciente salvar(Paciente paciente) {
         validar(paciente);
