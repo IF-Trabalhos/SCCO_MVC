@@ -1,6 +1,5 @@
 package com.example.SCCO_MVC.service;
 import com.example.SCCO_MVC.exception.RegraNegocioException;
-import com.example.SCCO_MVC.model.entity.Dentista;
 import com.example.SCCO_MVC.model.entity.Paciente;
 import com.example.SCCO_MVC.model.repository.PacienteRepository;
 import jakarta.transaction.Transactional;

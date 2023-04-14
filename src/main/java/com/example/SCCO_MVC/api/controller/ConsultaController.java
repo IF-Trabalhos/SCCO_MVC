@@ -2,9 +2,7 @@ package com.example.SCCO_MVC.api.controller;
 
 
 import com.example.SCCO_MVC.api.dto.ConsultaDTO;
-import com.example.SCCO_MVC.api.dto.DentistaDTO;
 import com.example.SCCO_MVC.model.entity.Consulta;
-import com.example.SCCO_MVC.model.entity.Dentista;
 import com.example.SCCO_MVC.service.ConsultaService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -1,9 +1,7 @@
 package com.example.SCCO_MVC.api.controller;
 
 
-import com.example.SCCO_MVC.api.dto.DentistaDTO;
 import com.example.SCCO_MVC.api.dto.SecretariaDTO;
-import com.example.SCCO_MVC.model.entity.Dentista;
 import com.example.SCCO_MVC.model.entity.Secretaria;
 import com.example.SCCO_MVC.service.EnderecoService;
 import com.example.SCCO_MVC.service.SecretariaService;

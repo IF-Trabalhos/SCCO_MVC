@@ -1,12 +1,9 @@
 package com.example.SCCO_MVC.api.controller;
 
-import com.example.SCCO_MVC.api.dto.DentistaDTO;
 import com.example.SCCO_MVC.api.dto.EspecialidadeDTO;
-import com.example.SCCO_MVC.model.entity.Dentista;
 import com.example.SCCO_MVC.model.entity.Especialidade;
 import com.example.SCCO_MVC.service.EspecialidadeService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

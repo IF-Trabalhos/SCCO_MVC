@@ -1,9 +1,7 @@
 package com.example.SCCO_MVC.api.controller;
 
 import com.example.SCCO_MVC.api.dto.AgendaDTO;
-import com.example.SCCO_MVC.api.dto.DentistaDTO;
 import com.example.SCCO_MVC.model.entity.Agenda;
-import com.example.SCCO_MVC.model.entity.Dentista;
 import com.example.SCCO_MVC.service.AgendaService;
 
 import lombok.RequiredArgsConstructor;
