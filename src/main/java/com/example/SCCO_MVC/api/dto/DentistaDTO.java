@@ -1,8 +1,14 @@
 package com.example.SCCO_MVC.api.dto;
 
 import com.example.SCCO_MVC.model.entity.Dentista;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class DentistaDTO {
     private Long id;
     private String cro;
@@ -13,7 +19,7 @@ public class DentistaDTO {
     private String cidade;
     private String complemento;
     private String cep;
-    private Integer numero;
+    private String numero;
 
     public static DentistaDTO create(Dentista dentista){
         ModelMapper modelMapper = new ModelMapper();

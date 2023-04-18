@@ -19,7 +19,7 @@ public class PacienteDTO {
     private String cidade;
     private String complemento;
     private String cep;
-    private Integer numero;
+    private String numero;
 
 
     public static PacienteDTO create(Paciente paciente){
