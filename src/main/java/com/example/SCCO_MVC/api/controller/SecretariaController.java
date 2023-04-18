@@ -2,10 +2,12 @@ package com.example.SCCO_MVC.api.controller;
 
 
 import com.example.SCCO_MVC.api.dto.SecretariaDTO;
+import com.example.SCCO_MVC.model.entity.Endereco;
 import com.example.SCCO_MVC.model.entity.Secretaria;
 import com.example.SCCO_MVC.service.EnderecoService;
 import com.example.SCCO_MVC.service.SecretariaService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,5 +40,11 @@ public class SecretariaController {
         return ResponseEntity.ok(secretarias.map(SecretariaDTO::create));
 
     }
-
+    public Secretaria converter(SecretariaDTO dto){
+        ModelMapper modelMapper = new ModelMapper();
+        Secretaria secretaria = modelMapper.map(dto, Secretaria.class);
+        Endereco endereco = modelMapper.map(dto, Endereco.class);
+        secretaria.setEndereco(endereco);
+        return secretaria;
+    }
 }

@@ -3,8 +3,10 @@ package com.example.SCCO_MVC.api.controller;
 
 import com.example.SCCO_MVC.api.dto.DentistaDTO;
 import com.example.SCCO_MVC.model.entity.Dentista;
+import com.example.SCCO_MVC.model.entity.Endereco;
 import com.example.SCCO_MVC.service.DentistaService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,6 +36,12 @@ public class DentistaController {
             return  new ResponseEntity("Dentista não encontrado", HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(dentistas.map(DentistaDTO::create));
-
+    }
+    public Dentista converter(DentistaDTO dto){
+        ModelMapper modelMapper = new ModelMapper();
+        Dentista dentista = modelMapper.map(dto, Dentista.class);
+        Endereco endereco = modelMapper.map(dto, Endereco.class);
+        dentista.setEndereco(endereco);
+        return dentista;
     }
 }

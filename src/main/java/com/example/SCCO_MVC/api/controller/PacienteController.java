@@ -2,15 +2,16 @@ package com.example.SCCO_MVC.api.controller;
 
 
 import com.example.SCCO_MVC.api.dto.PacienteDTO;
+import com.example.SCCO_MVC.exception.RegraNegocioException;
+import com.example.SCCO_MVC.model.entity.Endereco;
 import com.example.SCCO_MVC.model.entity.Paciente;
+import com.example.SCCO_MVC.service.EnderecoService;
 import com.example.SCCO_MVC.service.PacienteService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PacienteController {
     private final PacienteService service;
+    private final EnderecoService enderecoService;
 
     @GetMapping
     public ResponseEntity get(){
@@ -34,6 +36,24 @@ public class PacienteController {
             return  new ResponseEntity("Paciente não encontrado", HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(pacientes.map(PacienteDTO::create));
-
+    }
+    @PostMapping
+    public ResponseEntity post(@RequestBody PacienteDTO dto){
+        try{
+            Paciente paciente = converter(dto);
+            Endereco endereco = enderecoService.Salvar(paciente.getEndereco());
+            paciente.setEndereco(endereco);
+            paciente = service.salvar(paciente);
+            return new ResponseEntity(paciente, HttpStatus.CREATED);
+        }catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    public Paciente converter(PacienteDTO dto){
+        ModelMapper modelMapper = new ModelMapper();
+        Paciente paciente = modelMapper.map(dto, Paciente.class);
+        Endereco endereco = modelMapper.map(dto, Endereco.class);
+        paciente.setEndereco(endereco);
+        return paciente;
     }
 }
