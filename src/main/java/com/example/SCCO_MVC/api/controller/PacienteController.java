@@ -41,7 +41,7 @@ public class PacienteController {
     public ResponseEntity post(@RequestBody PacienteDTO dto){
         try{
             Paciente paciente = converter(dto);
-            Endereco endereco = enderecoService.Salvar(paciente.getEndereco());
+            Endereco endereco = enderecoService.salvar(paciente.getEndereco());
             paciente.setEndereco(endereco);
             paciente = service.salvar(paciente);
             return new ResponseEntity(paciente, HttpStatus.CREATED);

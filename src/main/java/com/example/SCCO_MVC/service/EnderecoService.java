@@ -14,7 +14,7 @@ public class EnderecoService {
         this.repository = repository;
     }
     @Transactional
-    public Endereco Salvar(Endereco endereco){
+    public Endereco salvar(Endereco endereco){
         validar(endereco);
         return this.repository.save(endereco);
     }

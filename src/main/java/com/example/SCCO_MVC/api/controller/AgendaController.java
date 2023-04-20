@@ -1,16 +1,17 @@
 package com.example.SCCO_MVC.api.controller;
 
 import com.example.SCCO_MVC.api.dto.AgendaDTO;
-import com.example.SCCO_MVC.model.entity.Agenda;
+import com.example.SCCO_MVC.exception.RegraNegocioException;
+import com.example.SCCO_MVC.model.entity.*;
 import com.example.SCCO_MVC.service.AgendaService;
 
+import com.example.SCCO_MVC.service.DentistaService;
+import com.example.SCCO_MVC.service.DisponibilidadeService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -24,6 +25,9 @@ import java.util.stream.Collectors;
 
 public class AgendaController {
     private final AgendaService service;
+    private final DisponibilidadeService disponibilidadeService;
+    private final DentistaService dentistaService;
+
     @GetMapping()
     public ResponseEntity get(){
         List<Agenda> agendas = service.getAgendas();
@@ -36,6 +40,38 @@ public class AgendaController {
             return  new ResponseEntity("Agenda não encontrada", HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(agendas.map(AgendaDTO::create));
+    }
 
+    @PostMapping
+    public ResponseEntity post(@RequestBody AgendaDTO dto){
+        try{
+            Agenda agenda = converter(dto);
+            agenda = service.salvar(agenda);
+            return new ResponseEntity(agenda, HttpStatus.CREATED);
+        }catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    public Agenda converter(AgendaDTO dto){
+        ModelMapper modelMapper = new ModelMapper();
+        Agenda agenda = modelMapper.map(dto, Agenda.class);
+        if (dto.getDisponibilidadeId() != null) {
+            Optional<Disponibilidade> disponibilidade = disponibilidadeService.getDisponibilidadeById
+                    (dto.getDisponibilidadeId());
+            if (!disponibilidade.isPresent()) {
+                agenda.setDisponibilidade(null);
+            } else {
+                agenda.setDisponibilidade(disponibilidade.get());
+            }
+        }
+        if (dto.getDentistaId() != null) {
+            Optional<Dentista> dentista = dentistaService.getDentistaById(dto.getDentistaId());
+            if (!dentista.isPresent()) {
+                agenda.setDentista(null);
+            } else {
+                agenda.setDentista(dentista.get());
+            }
+        }
+        return agenda;
     }
 }

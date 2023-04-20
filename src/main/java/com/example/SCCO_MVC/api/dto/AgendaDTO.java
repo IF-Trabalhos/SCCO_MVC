@@ -13,6 +13,7 @@ public class AgendaDTO {
     private Long id;
     private Double faturamento;
     private Long disponibilidadeId;
+    private Long dentistaId;
 
     public static AgendaDTO create(Agenda agenda){
         ModelMapper modelMapper = new ModelMapper();
