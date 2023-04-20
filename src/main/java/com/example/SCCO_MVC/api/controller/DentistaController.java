@@ -1,18 +1,20 @@
 package com.example.SCCO_MVC.api.controller;
 
 
+import com.example.SCCO_MVC.api.dto.AgendaDTO;
 import com.example.SCCO_MVC.api.dto.DentistaDTO;
+import com.example.SCCO_MVC.exception.RegraNegocioException;
+import com.example.SCCO_MVC.model.entity.Agenda;
 import com.example.SCCO_MVC.model.entity.Dentista;
+import com.example.SCCO_MVC.model.entity.Disponibilidade;
 import com.example.SCCO_MVC.model.entity.Endereco;
 import com.example.SCCO_MVC.service.DentistaService;
+import com.example.SCCO_MVC.service.EnderecoService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +25,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class DentistaController {
     private final DentistaService service;
+    private final EnderecoService enderecoService;
 
     @GetMapping
     public ResponseEntity get(){
@@ -36,6 +39,17 @@ public class DentistaController {
             return  new ResponseEntity("Dentista não encontrado", HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(dentistas.map(DentistaDTO::create));
+    }
+
+    @PostMapping
+    public ResponseEntity post(@RequestBody DentistaDTO dto){
+        try{
+            Dentista dentista = converter(dto);
+            dentista = service.salvar(dentista);
+            return new ResponseEntity(dentista, HttpStatus.CREATED);
+        }catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
     public Dentista converter(DentistaDTO dto){
         ModelMapper modelMapper = new ModelMapper();
