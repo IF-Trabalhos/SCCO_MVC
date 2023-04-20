@@ -45,6 +45,8 @@ public class DentistaController {
     public ResponseEntity post(@RequestBody DentistaDTO dto){
         try{
             Dentista dentista = converter(dto);
+            Endereco endereco = enderecoService.salvar(dentista.getEndereco());
+            dentista.setEndereco(endereco);
             dentista = service.salvar(dentista);
             return new ResponseEntity(dentista, HttpStatus.CREATED);
         }catch (RegraNegocioException e){
