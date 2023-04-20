@@ -1,7 +1,10 @@
 package com.example.SCCO_MVC.api.controller;
 
 
+import com.example.SCCO_MVC.api.dto.DentistaDTO;
 import com.example.SCCO_MVC.api.dto.SecretariaDTO;
+import com.example.SCCO_MVC.exception.RegraNegocioException;
+import com.example.SCCO_MVC.model.entity.Dentista;
 import com.example.SCCO_MVC.model.entity.Endereco;
 import com.example.SCCO_MVC.model.entity.Secretaria;
 import com.example.SCCO_MVC.service.EnderecoService;
@@ -10,10 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,6 +40,20 @@ public class SecretariaController {
         return ResponseEntity.ok(secretarias.map(SecretariaDTO::create));
 
     }
+
+    @PostMapping
+    public ResponseEntity post(@RequestBody SecretariaDTO dto){
+        try{
+            Secretaria secretaria = converter(dto);
+            Endereco endereco = enderecoService.salvar(secretaria.getEndereco());
+            secretaria.setEndereco(endereco);
+            secretaria = service.salvar(secretaria);
+            return new ResponseEntity(secretaria, HttpStatus.CREATED);
+        }catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     public Secretaria converter(SecretariaDTO dto){
         ModelMapper modelMapper = new ModelMapper();
         Secretaria secretaria = modelMapper.map(dto, Secretaria.class);
