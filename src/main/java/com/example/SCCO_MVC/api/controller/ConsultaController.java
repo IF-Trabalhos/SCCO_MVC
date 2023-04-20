@@ -1,7 +1,6 @@
 package com.example.SCCO_MVC.api.controller;
 
 
-import com.example.SCCO_MVC.api.dto.AgendaDTO;
 import com.example.SCCO_MVC.api.dto.ConsultaDTO;
 import com.example.SCCO_MVC.exception.RegraNegocioException;
 import com.example.SCCO_MVC.model.entity.*;

@@ -1,11 +1,8 @@
 package com.example.SCCO_MVC.api.controller;
 
-import com.example.SCCO_MVC.api.dto.DentistaDTO;
 import com.example.SCCO_MVC.api.dto.DisponibilidadeDTO;
 import com.example.SCCO_MVC.exception.RegraNegocioException;
-import com.example.SCCO_MVC.model.entity.Dentista;
 import com.example.SCCO_MVC.model.entity.Disponibilidade;
-import com.example.SCCO_MVC.model.entity.Endereco;
 import com.example.SCCO_MVC.service.DisponibilidadeService;
 
 import lombok.RequiredArgsConstructor;
