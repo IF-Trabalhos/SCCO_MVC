@@ -26,7 +26,7 @@ public class TratamentoController {
         List<Tratamento> tratamentos = service.getTratamentos();
         return ResponseEntity.ok(tratamentos.stream().map(TratamentoDTO::create).collect(Collectors.toList()));
     }
-    
+
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable("id") Long id){
         Optional<Tratamento> tratamentos = service.getTratamentoById(id);
