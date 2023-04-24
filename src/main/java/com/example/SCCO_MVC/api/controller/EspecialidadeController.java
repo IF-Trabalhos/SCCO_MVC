@@ -60,7 +60,7 @@ public class EspecialidadeController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    
+
     public Especialidade converter(EspecialidadeDTO dto) {
         ModelMapper modelMapper = new ModelMapper();
         Especialidade especialidade = modelMapper.map(dto, Especialidade.class);

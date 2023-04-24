@@ -30,6 +30,7 @@ public class ProcedimentoController {
         List<Procedimento> procedimentos = service.getProcedimentos();
         return ResponseEntity.ok(procedimentos.stream().map(ProcedimentoDTO::create).collect(Collectors.toList()));
     }
+
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable("id") Long id){
         Optional<Procedimento> procedimentos = service.getProcedimentoById(id);
@@ -49,6 +50,22 @@ public class ProcedimentoController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @PutMapping("{id}")
+    public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody ProcedimentoDTO dto) {
+        if (!service.getProcedimentoById(id).isPresent()) {
+            return new ResponseEntity("Procedimento não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try {
+            Procedimento procedimento = converter(dto);
+            procedimento.setId(id);
+            service.salvar(procedimento);
+            return ResponseEntity.ok(procedimento);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     public Procedimento converter (ProcedimentoDTO dto){
         ModelMapper modelMapper = new ModelMapper();
         Procedimento procedimento = modelMapper.map(dto, Procedimento.class);
