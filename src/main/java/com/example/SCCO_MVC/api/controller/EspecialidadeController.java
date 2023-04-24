@@ -25,6 +25,7 @@ public class EspecialidadeController {
         List<Especialidade> especialidades = service.getEspecialidades();
         return ResponseEntity.ok(especialidades.stream().map(EspecialidadeDTO::create).collect(Collectors.toList()));
     }
+
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable("id") Long id){
         Optional<Especialidade> especialidades = service.getEspecialidadeById(id);
@@ -44,6 +45,22 @@ public class EspecialidadeController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @PutMapping("{id}")
+    public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody EspecialidadeDTO dto) {
+        if (!service.getEspecialidadeById(id).isPresent()) {
+            return new ResponseEntity("Especialidade não encontrada", HttpStatus.NOT_FOUND);
+        }
+        try {
+            Especialidade especialidade = converter(dto);
+            especialidade.setId(id);
+            service.salvar(especialidade);
+            return ResponseEntity.ok(especialidade);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    
     public Especialidade converter(EspecialidadeDTO dto) {
         ModelMapper modelMapper = new ModelMapper();
         Especialidade especialidade = modelMapper.map(dto, Especialidade.class);
