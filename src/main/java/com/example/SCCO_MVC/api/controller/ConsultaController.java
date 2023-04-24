@@ -32,7 +32,7 @@ public class ConsultaController {
         List<Consulta> consultas = service.getConsultas();
         return ResponseEntity.ok(consultas.stream().map(ConsultaDTO::create).collect(Collectors.toList()));
     }
-    
+
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable("id") Long id){
         Optional<Consulta> consultas= service.getConsultaById(id);
@@ -67,7 +67,6 @@ public class ConsultaController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
 
     public Consulta converter (ConsultaDTO dto){
         ModelMapper modelMapper = new ModelMapper();

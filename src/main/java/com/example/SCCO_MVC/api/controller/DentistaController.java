@@ -29,6 +29,7 @@ public class DentistaController {
         List<Dentista> dentistas = service.getDentistas();
         return ResponseEntity.ok(dentistas.stream().map(DentistaDTO::create).collect(Collectors.toList()));
     }
+
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable("id") Long id){
         Optional<Dentista> dentistas = service.getDentistaById(id);
@@ -50,6 +51,22 @@ public class DentistaController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @PutMapping("{id}")
+    public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody DentistaDTO dto) {
+        if (!service.getDentistaById(id).isPresent()) {
+            return new ResponseEntity("Dentista não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try {
+            Dentista dentista = converter(dto);
+            dentista.setId(id);
+            service.salvar(dentista);
+            return ResponseEntity.ok(dentista);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     public Dentista converter(DentistaDTO dto){
         ModelMapper modelMapper = new ModelMapper();
         Dentista dentista = modelMapper.map(dto, Dentista.class);
