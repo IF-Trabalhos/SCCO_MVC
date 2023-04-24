@@ -29,6 +29,7 @@ public class SecretariaController {
         List<Secretaria> secretarias = service.getSecretarias();
         return ResponseEntity.ok(secretarias.stream().map(SecretariaDTO::create).collect(Collectors.toList()));
     }
+
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable("id") Long id){
         Optional<Secretaria> secretarias = service.getSecretariaById(id);
@@ -36,7 +37,6 @@ public class SecretariaController {
             return  new ResponseEntity("Secretaria não encontrada", HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(secretarias.map(SecretariaDTO::create));
-
     }
 
     @PostMapping
@@ -48,6 +48,21 @@ public class SecretariaController {
             secretaria = service.salvar(secretaria);
             return new ResponseEntity(secretaria, HttpStatus.CREATED);
         }catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody SecretariaDTO dto) {
+        if (!service.getSecretariaById(id).isPresent()) {
+            return new ResponseEntity("Secretaria não encontrada", HttpStatus.NOT_FOUND);
+        }
+        try {
+            Secretaria secretaria = converter(dto);
+            secretaria.setId(id);
+            service.salvar(secretaria);
+            return ResponseEntity.ok(secretaria);
+        } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
