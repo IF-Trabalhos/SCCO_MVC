@@ -29,6 +29,7 @@ public class DiaController {
         List<Dia> dias = service.getDias();
         return ResponseEntity.ok(dias.stream().map(DiaDTO::create).collect(Collectors.toList()));
     }
+
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable("id") Long id){
         Optional<Dia> dias = service.getDiaById(id);
@@ -48,6 +49,22 @@ public class DiaController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @PutMapping("{id}")
+    public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody DiaDTO dto) {
+        if (!service.getDiaById(id).isPresent()) {
+            return new ResponseEntity("Dia não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try {
+            Dia dia = converter(dto);
+            dia.setId(id);
+            service.salvar(dia);
+            return ResponseEntity.ok(dia);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     public Dia converter(DiaDTO dto){
         ModelMapper modelMapper = new ModelMapper();
         Dia dia = modelMapper.map(dto, Dia.class);
