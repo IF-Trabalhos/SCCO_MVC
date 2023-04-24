@@ -29,6 +29,7 @@ public class PacienteController {
         List<Paciente> pacientes = service.getPacientes();
         return ResponseEntity.ok(pacientes.stream().map(PacienteDTO::create).collect(Collectors.toList()));
     }
+
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable("id") Long id){
         Optional<Paciente> pacientes = service.getPacienteById(id);
@@ -37,6 +38,7 @@ public class PacienteController {
         }
         return ResponseEntity.ok(pacientes.map(PacienteDTO::create));
     }
+
     @PostMapping
     public ResponseEntity post(@RequestBody PacienteDTO dto){
         try{
@@ -49,6 +51,22 @@ public class PacienteController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @PutMapping("{id}")
+    public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody PacienteDTO dto) {
+        if (!service.getPacienteById(id).isPresent()) {
+            return new ResponseEntity("Paciente não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try {
+            Paciente paciente = converter(dto);
+            paciente.setId(id);
+            service.salvar(paciente);
+            return ResponseEntity.ok(paciente);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     public Paciente converter(PacienteDTO dto){
         ModelMapper modelMapper = new ModelMapper();
         Paciente paciente = modelMapper.map(dto, Paciente.class);
