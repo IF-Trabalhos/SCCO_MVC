@@ -26,6 +26,7 @@ public class TratamentoController {
         List<Tratamento> tratamentos = service.getTratamentos();
         return ResponseEntity.ok(tratamentos.stream().map(TratamentoDTO::create).collect(Collectors.toList()));
     }
+    
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable("id") Long id){
         Optional<Tratamento> tratamentos = service.getTratamentoById(id);
@@ -45,6 +46,22 @@ public class TratamentoController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @PutMapping("{id}")
+    public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody TratamentoDTO dto) {
+        if (!service.getTratamentoById(id).isPresent()) {
+            return new ResponseEntity("Tratamento não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try {
+            Tratamento tratamento = converter(dto);
+            tratamento.setId(id);
+            service.salvar(tratamento);
+            return ResponseEntity.ok(tratamento);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     public Tratamento converter (TratamentoDTO dto) {
         ModelMapper modelMapper = new ModelMapper();
         Tratamento tratamento = modelMapper.map(dto, Tratamento.class);
