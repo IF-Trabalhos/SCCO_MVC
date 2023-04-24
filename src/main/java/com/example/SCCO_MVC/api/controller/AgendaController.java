@@ -33,6 +33,7 @@ public class AgendaController {
         List<Agenda> agendas = service.getAgendas();
         return ResponseEntity.ok(agendas.stream().map(AgendaDTO::create).collect(Collectors.toList()));
     }
+
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable("id") Long id){
         Optional<Agenda> agendas = service.getAgendaById(id);
@@ -52,6 +53,22 @@ public class AgendaController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @PutMapping("{id}")
+    public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody AgendaDTO dto) {
+        if (!service.getAgendaById(id).isPresent()) {
+            return new ResponseEntity("Agenda não encontrada", HttpStatus.NOT_FOUND);
+        }
+        try {
+            Agenda agenda = converter(dto);
+            agenda.setId(id);
+            service.salvar(agenda);
+            return ResponseEntity.ok(agenda);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
     public Agenda converter(AgendaDTO dto){
         ModelMapper modelMapper = new ModelMapper();
         Agenda agenda = modelMapper.map(dto, Agenda.class);
