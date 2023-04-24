@@ -32,6 +32,7 @@ public class ConsultaController {
         List<Consulta> consultas = service.getConsultas();
         return ResponseEntity.ok(consultas.stream().map(ConsultaDTO::create).collect(Collectors.toList()));
     }
+    
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable("id") Long id){
         Optional<Consulta> consultas= service.getConsultaById(id);
@@ -51,6 +52,23 @@ public class ConsultaController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @PutMapping("{id}")
+    public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody ConsultaDTO dto) {
+        if (!service.getConsultaById(id).isPresent()) {
+            return new ResponseEntity("Consulta não encontrada", HttpStatus.NOT_FOUND);
+        }
+        try {
+            Consulta consulta = converter(dto);
+            consulta.setId(id);
+            service.salvar(consulta);
+            return ResponseEntity.ok(consulta);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+
     public Consulta converter (ConsultaDTO dto){
         ModelMapper modelMapper = new ModelMapper();
         Consulta consulta = modelMapper.map(dto, Consulta.class);
