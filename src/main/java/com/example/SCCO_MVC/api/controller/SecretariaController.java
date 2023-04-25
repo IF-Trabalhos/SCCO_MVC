@@ -40,7 +40,7 @@ public class SecretariaController {
         return ResponseEntity.ok(secretarias.map(SecretariaDTO::create));
     }
 
-    @DeleteMapping
+    @DeleteMapping("{id}")
     public ResponseEntity excluir(@PathVariable("id") Long id) {
         Optional<Secretaria> secretaria = service.getSecretariaById(id);
         if (!secretaria.isPresent()) {

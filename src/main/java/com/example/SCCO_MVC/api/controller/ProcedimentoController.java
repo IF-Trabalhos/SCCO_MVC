@@ -40,7 +40,7 @@ public class ProcedimentoController {
         return ResponseEntity.ok(procedimentos.map(ProcedimentoDTO::create));
     }
 
-    @DeleteMapping
+    @DeleteMapping("{id}")
     public ResponseEntity excluir(@PathVariable("id") Long id) {
         Optional<Procedimento> procedimento = service.getProcedimentoById(id);
         if (!procedimento.isPresent()) {

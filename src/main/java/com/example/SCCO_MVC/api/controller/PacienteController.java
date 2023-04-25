@@ -66,7 +66,7 @@ public class PacienteController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    @DeleteMapping
+    @DeleteMapping("{id}")
     public ResponseEntity excluir(@PathVariable("id") Long id) {
         Optional<Paciente> paciente = service.getPacienteById(id);
         if (!paciente.isPresent()) {

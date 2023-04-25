@@ -69,7 +69,7 @@ public class AgendaController {
         }
     }
 
-    @DeleteMapping("{id]")
+    @DeleteMapping("{id}")
     public ResponseEntity excluir(@PathVariable("id") Long id){
         Optional<Agenda> agenda = service.getAgendaById(id);
         if(!agenda.isPresent()){

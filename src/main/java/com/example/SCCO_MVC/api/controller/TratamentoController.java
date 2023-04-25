@@ -27,7 +27,7 @@ public class TratamentoController {
         List<Tratamento> tratamentos = service.getTratamentos();
         return ResponseEntity.ok(tratamentos.stream().map(TratamentoDTO::create).collect(Collectors.toList()));
     }
-    @DeleteMapping
+    @DeleteMapping("{id}")
     public ResponseEntity excluir(@PathVariable("id") Long id) {
         Optional<Tratamento> tratamento = service.getTratamentoById(id);
         if (!tratamento.isPresent()) {

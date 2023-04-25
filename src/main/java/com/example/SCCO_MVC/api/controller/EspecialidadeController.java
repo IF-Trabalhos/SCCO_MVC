@@ -35,7 +35,7 @@ public class EspecialidadeController {
         }
         return ResponseEntity.ok(especialidades.map(EspecialidadeDTO::create));
     }
-    @DeleteMapping
+    @DeleteMapping("{id}")
     public ResponseEntity excluir(@PathVariable("id") Long id) {
         Optional<Especialidade> especialidade = service.getEspecialidadeById(id);
         if (!especialidade.isPresent()) {

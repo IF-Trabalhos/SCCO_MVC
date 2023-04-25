@@ -49,7 +49,7 @@ public class DiaController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    @DeleteMapping
+    @DeleteMapping("{id}")
     public ResponseEntity excluir(@PathVariable("id") Long id) {
         Optional<Dia> dia = service.getDiaById(id);
         if (!dia.isPresent()) {
