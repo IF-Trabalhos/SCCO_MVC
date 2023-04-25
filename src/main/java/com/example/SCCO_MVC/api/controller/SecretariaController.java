@@ -4,6 +4,7 @@ package com.example.SCCO_MVC.api.controller;
 import com.example.SCCO_MVC.api.dto.SecretariaDTO;
 import com.example.SCCO_MVC.exception.RegraNegocioException;
 import com.example.SCCO_MVC.model.entity.Endereco;
+import com.example.SCCO_MVC.model.entity.Paciente;
 import com.example.SCCO_MVC.model.entity.Secretaria;
 import com.example.SCCO_MVC.service.EnderecoService;
 import com.example.SCCO_MVC.service.SecretariaService;
@@ -39,6 +40,19 @@ public class SecretariaController {
         return ResponseEntity.ok(secretarias.map(SecretariaDTO::create));
     }
 
+    @DeleteMapping
+    public ResponseEntity excluir(@PathVariable("id") Long id) {
+        Optional<Secretaria> secretaria = service.getSecretariaById(id);
+        if (!secretaria.isPresent()) {
+            return new ResponseEntity("Secretaria não encontrada", HttpStatus.NOT_FOUND);
+        }
+        try {
+            service.excluir(secretaria.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
     @PostMapping
     public ResponseEntity post(@RequestBody SecretariaDTO dto){
         try{

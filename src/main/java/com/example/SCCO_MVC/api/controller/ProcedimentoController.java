@@ -40,6 +40,19 @@ public class ProcedimentoController {
         return ResponseEntity.ok(procedimentos.map(ProcedimentoDTO::create));
     }
 
+    @DeleteMapping
+    public ResponseEntity excluir(@PathVariable("id") Long id) {
+        Optional<Procedimento> procedimento = service.getProcedimentoById(id);
+        if (!procedimento.isPresent()) {
+            return new ResponseEntity("Procedimento não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try {
+            service.excluir(procedimento.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
     @PostMapping
     public ResponseEntity post(@RequestBody ProcedimentoDTO dto){
         try{

@@ -66,6 +66,20 @@ public class PacienteController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+    @DeleteMapping
+    public ResponseEntity excluir(@PathVariable("id") Long id) {
+        Optional<Paciente> paciente = service.getPacienteById(id);
+        if (!paciente.isPresent()) {
+            return new ResponseEntity("Paciente não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try {
+            service.excluir(paciente.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
 
     public Paciente converter(PacienteDTO dto){
         ModelMapper modelMapper = new ModelMapper();

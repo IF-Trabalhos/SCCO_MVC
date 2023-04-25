@@ -3,6 +3,7 @@ package com.example.SCCO_MVC.api.controller;
 
 import com.example.SCCO_MVC.api.dto.TratamentoDTO;
 import com.example.SCCO_MVC.exception.RegraNegocioException;
+import com.example.SCCO_MVC.model.entity.Paciente;
 import com.example.SCCO_MVC.model.entity.Tratamento;
 import com.example.SCCO_MVC.service.TratamentoService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,19 @@ public class TratamentoController {
     public ResponseEntity get(){
         List<Tratamento> tratamentos = service.getTratamentos();
         return ResponseEntity.ok(tratamentos.stream().map(TratamentoDTO::create).collect(Collectors.toList()));
+    }
+    @DeleteMapping
+    public ResponseEntity excluir(@PathVariable("id") Long id) {
+        Optional<Tratamento> tratamento = service.getTratamentoById(id);
+        if (!tratamento.isPresent()) {
+            return new ResponseEntity("Tratamento não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try {
+            service.excluir(tratamento.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @GetMapping("/{id}")

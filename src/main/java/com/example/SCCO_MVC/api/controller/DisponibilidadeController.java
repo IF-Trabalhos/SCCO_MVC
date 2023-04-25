@@ -3,6 +3,7 @@ package com.example.SCCO_MVC.api.controller;
 import com.example.SCCO_MVC.api.dto.DisponibilidadeDTO;
 import com.example.SCCO_MVC.exception.RegraNegocioException;
 import com.example.SCCO_MVC.model.entity.Disponibilidade;
+import com.example.SCCO_MVC.model.entity.Paciente;
 import com.example.SCCO_MVC.service.DisponibilidadeService;
 
 import lombok.RequiredArgsConstructor;
@@ -45,6 +46,19 @@ public class DisponibilidadeController {
             Disponibilidade disponibilidade = converter(dto);
             disponibilidade = service.salvar(disponibilidade);
             return new ResponseEntity(disponibilidade, HttpStatus.CREATED);
+        }catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    @DeleteMapping
+    public ResponseEntity excluir(@PathVariable("id") Long id) {
+        Optional<Disponibilidade> disponibilidade = service.getDisponibilidadeById(id);
+        if (!disponibilidade.isPresent()) {
+            return new ResponseEntity("Disponibilidade não encontrada", HttpStatus.NOT_FOUND);
+        }
+        try {
+            service.excluir(disponibilidade.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
         }catch (RegraNegocioException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }

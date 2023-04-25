@@ -49,6 +49,19 @@ public class DiaController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+    @DeleteMapping
+    public ResponseEntity excluir(@PathVariable("id") Long id) {
+        Optional<Dia> dia = service.getDiaById(id);
+        if (!dia.isPresent()) {
+            return new ResponseEntity("Dia não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try {
+            service.excluir(dia.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
     @PutMapping("{id}")
     public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody DiaDTO dto) {

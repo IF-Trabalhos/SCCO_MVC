@@ -12,7 +12,7 @@ import java.util.Optional;
 
 @Service
 public class PacienteService {
-    private PacienteRepository repository;
+    public PacienteRepository repository;
 
     public PacienteService(PacienteRepository repository) {
         this.repository = repository;
@@ -34,7 +34,7 @@ public class PacienteService {
     }
 
     @Transactional
-    private void excluir(Paciente paciente) {
+    public void excluir(Paciente paciente) {
         Objects.requireNonNull(paciente.getId());
         this.repository.delete(paciente);
     }

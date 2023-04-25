@@ -3,6 +3,7 @@ package com.example.SCCO_MVC.api.controller;
 import com.example.SCCO_MVC.api.dto.EspecialidadeDTO;
 import com.example.SCCO_MVC.exception.RegraNegocioException;
 import com.example.SCCO_MVC.model.entity.Especialidade;
+import com.example.SCCO_MVC.model.entity.Paciente;
 import com.example.SCCO_MVC.service.EspecialidadeService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -33,6 +34,19 @@ public class EspecialidadeController {
             return  new ResponseEntity("Especialidade não encontrada", HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(especialidades.map(EspecialidadeDTO::create));
+    }
+    @DeleteMapping
+    public ResponseEntity excluir(@PathVariable("id") Long id) {
+        Optional<Especialidade> especialidade = service.getEspecialidadeById(id);
+        if (!especialidade.isPresent()) {
+            return new ResponseEntity("Especialidade não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try {
+            service.excluir(especialidade.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PostMapping

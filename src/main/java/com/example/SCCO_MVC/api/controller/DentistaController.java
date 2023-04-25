@@ -51,6 +51,19 @@ public class DentistaController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+    @DeleteMapping
+    public ResponseEntity excluir(@PathVariable("id") Long id) {
+        Optional<Dentista> dentista = service.getDentistaById(id);
+        if (!dentista.isPresent()) {
+            return new ResponseEntity("Dentista não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try {
+            service.excluir(dentista.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
     @PutMapping("{id}")
     public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody DentistaDTO dto) {
