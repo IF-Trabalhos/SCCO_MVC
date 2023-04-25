@@ -69,6 +69,21 @@ public class AgendaController {
         }
     }
 
+    @DeleteMapping("{id]")
+    public ResponseEntity excluir(@PathVariable("id") Long id){
+        Optional<Agenda> agenda = service.getAgendaById(id);
+        if(!agenda.isPresent()){
+            return new ResponseEntity("Agenda não encontrada", HttpStatus.NOT_FOUND);
+        }
+        try {
+            service.excluir(agenda.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        } catch(RegraNegocioException e){
+                return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+
     public Agenda converter(AgendaDTO dto){
         ModelMapper modelMapper = new ModelMapper();
         Agenda agenda = modelMapper.map(dto, Agenda.class);
