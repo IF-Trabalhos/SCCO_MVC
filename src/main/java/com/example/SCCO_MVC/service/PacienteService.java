@@ -7,11 +7,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 
 @Service
 public class PacienteService {
-    private PacienteRepository repository;
+    public PacienteRepository repository;
 
     public PacienteService(PacienteRepository repository) {
         this.repository = repository;
@@ -22,6 +23,10 @@ public class PacienteService {
         return this.repository.findAll();
     }
 
+
+    public Optional<Paciente> getPacienteById(Long id){
+        return this.repository.findById(id);
+    }
     @Transactional
     public Paciente salvar(Paciente paciente) {
         validar(paciente);
@@ -29,7 +34,7 @@ public class PacienteService {
     }
 
     @Transactional
-    private void excluir(Paciente paciente) {
+    public void excluir(Paciente paciente) {
         Objects.requireNonNull(paciente.getId());
         this.repository.delete(paciente);
     }

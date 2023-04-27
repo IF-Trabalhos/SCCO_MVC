@@ -2,16 +2,20 @@ package com.example.SCCO_MVC.api.controller;
 
 
 import com.example.SCCO_MVC.api.dto.SecretariaDTO;
+import com.example.SCCO_MVC.exception.RegraNegocioException;
+import com.example.SCCO_MVC.model.entity.Endereco;
+import com.example.SCCO_MVC.model.entity.Paciente;
 import com.example.SCCO_MVC.model.entity.Secretaria;
 import com.example.SCCO_MVC.service.EnderecoService;
 import com.example.SCCO_MVC.service.SecretariaService;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -27,4 +31,61 @@ public class SecretariaController {
         return ResponseEntity.ok(secretarias.stream().map(SecretariaDTO::create).collect(Collectors.toList()));
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity get(@PathVariable("id") Long id){
+        Optional<Secretaria> secretarias = service.getSecretariaById(id);
+        if (!secretarias.isPresent()){
+            return  new ResponseEntity("Secretaria não encontrada", HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(secretarias.map(SecretariaDTO::create));
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity excluir(@PathVariable("id") Long id) {
+        Optional<Secretaria> secretaria = service.getSecretariaById(id);
+        if (!secretaria.isPresent()) {
+            return new ResponseEntity("Secretaria não encontrada", HttpStatus.NOT_FOUND);
+        }
+        try {
+            service.excluir(secretaria.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    @PostMapping
+    public ResponseEntity post(@RequestBody SecretariaDTO dto){
+        try{
+            Secretaria secretaria = converter(dto);
+            Endereco endereco = enderecoService.salvar(secretaria.getEndereco());
+            secretaria.setEndereco(endereco);
+            secretaria = service.salvar(secretaria);
+            return new ResponseEntity(secretaria, HttpStatus.CREATED);
+        }catch (RegraNegocioException e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody SecretariaDTO dto) {
+        if (!service.getSecretariaById(id).isPresent()) {
+            return new ResponseEntity("Secretaria não encontrada", HttpStatus.NOT_FOUND);
+        }
+        try {
+            Secretaria secretaria = converter(dto);
+            secretaria.setId(id);
+            service.salvar(secretaria);
+            return ResponseEntity.ok(secretaria);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    public Secretaria converter(SecretariaDTO dto){
+        ModelMapper modelMapper = new ModelMapper();
+        Secretaria secretaria = modelMapper.map(dto, Secretaria.class);
+        Endereco endereco = modelMapper.map(dto, Endereco.class);
+        secretaria.setEndereco(endereco);
+        return secretaria;
+    }
 }
