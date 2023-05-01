@@ -27,7 +27,7 @@ public class SwaggerConfig {
                 .useDefaultResponseMessages(false)
                 .select()
                 .apis(RequestHandlerSelectors
-                        .basePackage("com.example.scco_mvc.api.controller"))
+                        .basePackage("com.example.SCCO_MVC.api.controller"))
                 .paths(PathSelectors.any())
                 .build()
                 //.securityContexts(Arrays.asList(securityContext()))

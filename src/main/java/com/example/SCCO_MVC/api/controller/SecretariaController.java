@@ -8,9 +8,7 @@ import com.example.SCCO_MVC.model.entity.Paciente;
 import com.example.SCCO_MVC.model.entity.Secretaria;
 import com.example.SCCO_MVC.service.EnderecoService;
 import com.example.SCCO_MVC.service.SecretariaService;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -24,6 +22,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/secretarias")
 @RequiredArgsConstructor
+@Api("Api de Secretario(a)")
 public class SecretariaController {
     private final SecretariaService service;
     private final EnderecoService enderecoService;
@@ -40,12 +39,12 @@ public class SecretariaController {
     }
 
     @GetMapping("/{id}")
-    @ApiOperation("Obter detalhes de um(a) secretario(a)")
-    @ApiResponses({
+    @ApiOperation(value = "Obter detalhes de um(a) secretario(a)")
+    @ApiResponses(value = {
             @ApiResponse(code = 200, message = "Secretario(a) encontrado"),
             @ApiResponse(code = 404, message = "Secretario(a) não encontrado")
     })
-    public ResponseEntity get(@PathVariable("id") Long id){
+    public ResponseEntity get(@PathVariable("id") @ApiParam("Id do(a) secretario(a)") Long id){
         Optional<Secretaria> secretarias = service.getSecretariaById(id);
         if (!secretarias.isPresent()){
             return  new ResponseEntity("Secretaria não encontrada", HttpStatus.NOT_FOUND);
@@ -54,12 +53,12 @@ public class SecretariaController {
     }
 
     @DeleteMapping("{id}")
-    @ApiOperation("Exclui um(a) secretario(a)")
-    @ApiResponses({
+    @ApiOperation(value = "Exclui um(a) secretario(a)")
+    @ApiResponses(value = {
             @ApiResponse(code = 204, message = "Secretario(a) excluido com sucesso"),
             @ApiResponse(code = 404, message = "Secretario(a) não encontrado")
     })
-    public ResponseEntity excluir(@PathVariable("id") Long id) {
+    public ResponseEntity excluir(@PathVariable("id") @ApiParam("Id do(a) secretario(a)") Long id) {
         Optional<Secretaria> secretaria = service.getSecretariaById(id);
         if (!secretaria.isPresent()) {
             return new ResponseEntity("Secretaria não encontrada", HttpStatus.NOT_FOUND);
@@ -72,8 +71,8 @@ public class SecretariaController {
         }
     }
     @PostMapping
-    @ApiOperation("Cadastrar novo(a) secretario(a)")
-    @ApiResponses({
+    @ApiOperation(value = "Cadastrar novo(a) secretario(a)")
+    @ApiResponses(value = {
             @ApiResponse(code = 201, message = "Secretario(a) salvo com sucesso"),
             @ApiResponse(code = 400, message = "Erro ao salvar secretario(a)")
     })
