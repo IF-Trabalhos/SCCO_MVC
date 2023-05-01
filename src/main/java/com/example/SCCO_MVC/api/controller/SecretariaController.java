@@ -8,6 +8,9 @@ import com.example.SCCO_MVC.model.entity.Paciente;
 import com.example.SCCO_MVC.model.entity.Secretaria;
 import com.example.SCCO_MVC.service.EnderecoService;
 import com.example.SCCO_MVC.service.SecretariaService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -32,6 +35,11 @@ public class SecretariaController {
     }
 
     @GetMapping("/{id}")
+    @ApiOperation("Obter detalhes de um(a) secretario(a)")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Secretario(a) encontrado"),
+            @ApiResponse(code = 404, message = "Secretario(a) não encontrado")
+    })
     public ResponseEntity get(@PathVariable("id") Long id){
         Optional<Secretaria> secretarias = service.getSecretariaById(id);
         if (!secretarias.isPresent()){
@@ -54,6 +62,11 @@ public class SecretariaController {
         }
     }
     @PostMapping
+    @ApiOperation("Cadastrar novo(a) secretario(a)")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "Secretario(a) salvo com sucesso"),
+            @ApiResponse(code = 400, message = "Erro ao salvar secretario(a)")
+    })
     public ResponseEntity post(@RequestBody SecretariaDTO dto){
         try{
             Secretaria secretaria = converter(dto);

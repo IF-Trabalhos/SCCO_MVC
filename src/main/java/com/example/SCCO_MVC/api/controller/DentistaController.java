@@ -7,6 +7,9 @@ import com.example.SCCO_MVC.model.entity.Dentista;
 import com.example.SCCO_MVC.model.entity.Endereco;
 import com.example.SCCO_MVC.service.DentistaService;
 import com.example.SCCO_MVC.service.EnderecoService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -31,6 +34,11 @@ public class DentistaController {
     }
 
     @GetMapping("/{id}")
+    @ApiOperation("Obter detalhes de um Dentista")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Dentista encontrado"),
+            @ApiResponse(code = 404, message = "Dentista não encontrado")
+    })
     public ResponseEntity get(@PathVariable("id") Long id){
         Optional<Dentista> dentistas = service.getDentistaById(id);
         if (!dentistas.isPresent()){
@@ -40,6 +48,11 @@ public class DentistaController {
     }
 
     @PostMapping
+    @ApiOperation("Cadastrar novo Dentista")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "Dentista cadastrado com sucesso"),
+            @ApiResponse(code = 404, message = "Erro ao cadastrar o Dentista")
+    })
     public ResponseEntity post(@RequestBody DentistaDTO dto){
         try{
             Dentista dentista = converter(dto);

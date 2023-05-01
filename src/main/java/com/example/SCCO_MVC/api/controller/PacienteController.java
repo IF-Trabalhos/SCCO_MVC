@@ -7,6 +7,9 @@ import com.example.SCCO_MVC.model.entity.Endereco;
 import com.example.SCCO_MVC.model.entity.Paciente;
 import com.example.SCCO_MVC.service.EnderecoService;
 import com.example.SCCO_MVC.service.PacienteService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -31,6 +34,11 @@ public class PacienteController {
     }
 
     @GetMapping("/{id}")
+    @ApiOperation("Obter detalhes de um paciente")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Paciente encontrado"),
+            @ApiResponse(code = 404, message = "Paciente não encontrado")
+    })
     public ResponseEntity get(@PathVariable("id") Long id){
         Optional<Paciente> pacientes = service.getPacienteById(id);
         if (!pacientes.isPresent()){
@@ -40,6 +48,11 @@ public class PacienteController {
     }
 
     @PostMapping
+    @ApiOperation("Cadastrar novo paciente")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "Paciente cadastrado com sucesso"),
+            @ApiResponse(code = 404, message = "Erro ao cadastrar paciente")
+    })
     public ResponseEntity post(@RequestBody PacienteDTO dto){
         try{
             Paciente paciente = converter(dto);
