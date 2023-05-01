@@ -80,6 +80,11 @@ public class PacienteController {
         }
     }
     @DeleteMapping("{id}")
+    @ApiOperation("Exclui um Paciente")
+    @ApiResponses({
+            @ApiResponse(code = 204, message = "Paciente excluido com sucesso"),
+            @ApiResponse(code = 404, message = "Paciente não encontrado")
+    })
     public ResponseEntity excluir(@PathVariable("id") Long id) {
         Optional<Paciente> paciente = service.getPacienteById(id);
         if (!paciente.isPresent()) {

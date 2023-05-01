@@ -29,6 +29,11 @@ public class SecretariaController {
     private final EnderecoService enderecoService;
 
     @GetMapping()
+    @ApiOperation("Retorna a lista de secretarios(as) no sistema")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Lista de secretarios(as) retornado com sucesso"),
+            @ApiResponse(code = 500, message = "Ocorreu um erro ao buscar a lista de secretarios(as)")
+    })
     public ResponseEntity get(){
         List<Secretaria> secretarias = service.getSecretarias();
         return ResponseEntity.ok(secretarias.stream().map(SecretariaDTO::create).collect(Collectors.toList()));
@@ -49,6 +54,11 @@ public class SecretariaController {
     }
 
     @DeleteMapping("{id}")
+    @ApiOperation("Exclui um(a) secretario(a)")
+    @ApiResponses({
+            @ApiResponse(code = 204, message = "Secretario(a) excluido com sucesso"),
+            @ApiResponse(code = 404, message = "Secretario(a) não encontrado")
+    })
     public ResponseEntity excluir(@PathVariable("id") Long id) {
         Optional<Secretaria> secretaria = service.getSecretariaById(id);
         if (!secretaria.isPresent()) {

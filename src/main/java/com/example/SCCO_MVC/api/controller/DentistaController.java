@@ -65,6 +65,11 @@ public class DentistaController {
         }
     }
     @DeleteMapping("{id}")
+    @ApiOperation("Exclui um Dentista")
+    @ApiResponses({
+            @ApiResponse(code = 204, message = "Dentista excluido com sucesso"),
+            @ApiResponse(code = 404, message = "Dentista não encontrado")
+    })
     public ResponseEntity excluir(@PathVariable("id") Long id) {
         Optional<Dentista> dentista = service.getDentistaById(id);
         if (!dentista.isPresent()) {
