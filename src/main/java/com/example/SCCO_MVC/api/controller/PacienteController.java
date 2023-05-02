@@ -72,6 +72,7 @@ public class PacienteController {
     }
 
     @PutMapping("{id}")
+    @ApiOperation("Atualiza um Paciente")
     public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody PacienteDTO dto) {
         if (!service.getPacienteById(id).isPresent()) {
             return new ResponseEntity("Paciente não encontrado", HttpStatus.NOT_FOUND);

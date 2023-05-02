@@ -70,6 +70,22 @@ public class DentistaController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @PutMapping("{id}")
+    @ApiOperation("Atualiza Dentista")
+    public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody DentistaDTO dto) {
+        if (!service.getDentistaById(id).isPresent()) {
+            return new ResponseEntity("Dentista não encontrado", HttpStatus.NOT_FOUND);
+        }
+        try {
+            Dentista dentista = converter(dto);
+            dentista.setId(id);
+            service.salvar(dentista);
+            return ResponseEntity.ok(dentista);
+        } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
     @DeleteMapping("{id}")
     @ApiOperation("Exclui um Dentista")
     @ApiResponses({
@@ -85,21 +101,6 @@ public class DentistaController {
             service.excluir(dentista.get());
             return new ResponseEntity(HttpStatus.NO_CONTENT);
         }catch (RegraNegocioException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
-
-    @PutMapping("{id}")
-    public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody DentistaDTO dto) {
-        if (!service.getDentistaById(id).isPresent()) {
-            return new ResponseEntity("Dentista não encontrado", HttpStatus.NOT_FOUND);
-        }
-        try {
-            Dentista dentista = converter(dto);
-            dentista.setId(id);
-            service.salvar(dentista);
-            return ResponseEntity.ok(dentista);
-        } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }

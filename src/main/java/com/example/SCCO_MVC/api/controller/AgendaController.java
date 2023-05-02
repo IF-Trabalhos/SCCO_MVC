@@ -1,12 +1,17 @@
 package com.example.SCCO_MVC.api.controller;
 
 import com.example.SCCO_MVC.api.dto.AgendaDTO;
+import com.example.SCCO_MVC.api.dto.PacienteDTO;
 import com.example.SCCO_MVC.exception.RegraNegocioException;
 import com.example.SCCO_MVC.model.entity.*;
 import com.example.SCCO_MVC.service.AgendaService;
 
 import com.example.SCCO_MVC.service.DentistaService;
 import com.example.SCCO_MVC.service.DisponibilidadeService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -35,7 +40,12 @@ public class AgendaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity get(@PathVariable("id") Long id){
+    @ApiOperation("Obter detalhes de um Agenda")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Agenda encontrado"),
+            @ApiResponse(code = 404, message = "Agenda não encontrado")
+    })
+    public ResponseEntity get(@PathVariable("id") @ApiParam("Id do Agenda") Long id){
         Optional<Agenda> agendas = service.getAgendaById(id);
         if (!agendas.isPresent()){
             return  new ResponseEntity("Agenda não encontrada", HttpStatus.NOT_FOUND);
@@ -44,6 +54,11 @@ public class AgendaController {
     }
 
     @PostMapping
+    @ApiOperation("Cadastrar novo Agenda")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "Agenda cadastrado com sucesso"),
+            @ApiResponse(code = 404, message = "Erro ao cadastrar agenda")
+    })
     public ResponseEntity post(@RequestBody AgendaDTO dto){
         try{
             Agenda agenda = converter(dto);
@@ -55,6 +70,7 @@ public class AgendaController {
     }
 
     @PutMapping("{id}")
+    @ApiOperation("Atualiza Agenda")
     public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody AgendaDTO dto) {
         if (!service.getAgendaById(id).isPresent()) {
             return new ResponseEntity("Agenda não encontrada", HttpStatus.NOT_FOUND);
@@ -70,7 +86,12 @@ public class AgendaController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity excluir(@PathVariable("id") Long id){
+    @ApiOperation("Exclui um Agenda")
+    @ApiResponses({
+            @ApiResponse(code = 204, message = "Agenda excluido com sucesso"),
+            @ApiResponse(code = 404, message = "Agenda não encontrado")
+    })
+    public ResponseEntity excluir(@PathVariable("id") @ApiParam("Id do Agenda") Long id) {
         Optional<Agenda> agenda = service.getAgendaById(id);
         if(!agenda.isPresent()){
             return new ResponseEntity("Agenda não encontrada", HttpStatus.NOT_FOUND);

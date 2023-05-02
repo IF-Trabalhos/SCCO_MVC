@@ -8,6 +8,10 @@ import com.example.SCCO_MVC.service.ConsultaService;
 import com.example.SCCO_MVC.service.DentistaService;
 import com.example.SCCO_MVC.service.PacienteService;
 import com.example.SCCO_MVC.service.TratamentoService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -28,12 +32,22 @@ public class ConsultaController {
     private final PacienteService pacienteService;
 
     @GetMapping
+    @ApiOperation("Retorna a lista de consultas no sistema")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Lista de consultas retornado com sucesso"),
+            @ApiResponse(code = 500, message = "Ocorreu um erro ao buscar a lista de consultas")
+    })
     public ResponseEntity get(){
         List<Consulta> consultas = service.getConsultas();
         return ResponseEntity.ok(consultas.stream().map(ConsultaDTO::create).collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
+    @ApiOperation("Obter detalhes de uma consulta")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Consulta encontrado"),
+            @ApiResponse(code = 404, message = "Consulta não encontrado")
+    })
     public ResponseEntity get(@PathVariable("id") Long id){
         Optional<Consulta> consultas= service.getConsultaById(id);
         if (!consultas.isPresent()){
@@ -43,6 +57,11 @@ public class ConsultaController {
     }
 
     @PostMapping
+    @ApiOperation("Cadastrar novo consulta")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "Consulta cadastrado com sucesso"),
+            @ApiResponse(code = 404, message = "Erro ao cadastrar consulta")
+    })
     public ResponseEntity post(@RequestBody ConsultaDTO dto){
         try{
             Consulta consulta = converter(dto);
@@ -52,21 +71,9 @@ public class ConsultaController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    @DeleteMapping("{id}")
-    public ResponseEntity excluir(@PathVariable("id") Long id) {
-        Optional<Consulta> consulta = service.getConsultaById(id);
-        if (!consulta.isPresent()) {
-            return new ResponseEntity("Consulta não encontrada", HttpStatus.NOT_FOUND);
-        }
-        try {
-            service.excluir(consulta.get());
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
-        }catch (RegraNegocioException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
-    }
 
     @PutMapping("{id}")
+    @ApiOperation("Atualiza Consulta")
     public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody ConsultaDTO dto) {
         if (!service.getConsultaById(id).isPresent()) {
             return new ResponseEntity("Consulta não encontrada", HttpStatus.NOT_FOUND);
@@ -77,6 +84,24 @@ public class ConsultaController {
             service.salvar(consulta);
             return ResponseEntity.ok(consulta);
         } catch (RegraNegocioException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    @DeleteMapping("{id}")
+    @ApiOperation("Exclui um Consulta")
+    @ApiResponses({
+            @ApiResponse(code = 204, message = "Consulta excluido com sucesso"),
+            @ApiResponse(code = 404, message = "Consulta não encontrado")
+    })
+    public ResponseEntity excluir(@PathVariable("id") @ApiParam("Id do Consulta") Long id) {
+        Optional<Consulta> consulta = service.getConsultaById(id);
+        if (!consulta.isPresent()) {
+            return new ResponseEntity("Consulta não encontrada", HttpStatus.NOT_FOUND);
+        }
+        try {
+            service.excluir(consulta.get());
+            return new ResponseEntity(HttpStatus.NO_CONTENT);
+        }catch (RegraNegocioException e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
