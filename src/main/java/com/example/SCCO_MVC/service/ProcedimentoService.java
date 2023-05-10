@@ -48,9 +48,5 @@ public class ProcedimentoService {
                 || procedimento.getEspecialidade().getId() == 0) {
             throw new RegraNegocioException("Especialidade invalida");
         }
-        if (procedimento.getTratamento() == null || procedimento.getTratamento().getId() == null
-                || procedimento.getTratamento().getId() == 0) {
-            throw new RegraNegocioException("Especialidade invalida");
-        }
     }
 }

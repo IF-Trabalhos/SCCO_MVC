@@ -7,7 +7,6 @@ import com.example.SCCO_MVC.model.entity.*;
 import com.example.SCCO_MVC.service.ConsultaService;
 import com.example.SCCO_MVC.service.DentistaService;
 import com.example.SCCO_MVC.service.PacienteService;
-import com.example.SCCO_MVC.service.TratamentoService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;

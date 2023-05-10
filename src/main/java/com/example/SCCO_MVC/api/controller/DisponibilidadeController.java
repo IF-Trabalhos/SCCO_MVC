@@ -1,7 +1,6 @@
 package com.example.SCCO_MVC.api.controller;
 
 import com.example.SCCO_MVC.exception.RegraNegocioException;
-import com.example.SCCO_MVC.service.DisponibilidadeService;
 
 import io.swagger.annotations.*;
 import lombok.RequiredArgsConstructor;

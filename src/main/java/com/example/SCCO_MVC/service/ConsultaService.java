@@ -43,19 +43,23 @@ public class ConsultaService {
         if (consulta.getData() == null) {
             throw new RegraNegocioException("Data invalida");
         }
-        if (consulta.getHoraInicio() == null) {
-            throw new RegraNegocioException("Hora de inicio invalida");
+        if (consulta.getHoraInicial() == null) {
+            throw new RegraNegocioException("Hora inicial invalida");
         }
-        if (consulta.getHoraFim() == null) {
-            throw new RegraNegocioException("Hora de término invalida");
+        if (consulta.getHoraFinal() == null) {
+            throw new RegraNegocioException("Hora final invalida");
         }
         if (consulta.getDentista() == null || consulta.getDentista().getId() == null
                 || consulta.getDentista().getId() == 0) {
-            throw new RegraNegocioException("Especialidade invalida");
+            throw new RegraNegocioException("Dentista invalido");
         }
         if (consulta.getPaciente() == null || consulta.getPaciente().getId() == null
                 || consulta.getPaciente().getId() == 0) {
-            throw new RegraNegocioException("Especialidade invalida");
+            throw new RegraNegocioException("Paciente invalido");
+        }
+        if (consulta.getProcedimento() == null || consulta.getProcedimento().getId() == null
+                || consulta.getProcedimento().getId() == 0) {
+            throw new RegraNegocioException("Procedimento invalido");
         }
     }
 }

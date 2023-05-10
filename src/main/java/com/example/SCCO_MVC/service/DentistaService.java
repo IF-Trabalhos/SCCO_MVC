@@ -44,5 +44,13 @@ public class DentistaService {
                 || dentista.getNome().length() > 255) {
             throw new RegraNegocioException("Nome vazio ou invalido");
         }
+        if (dentista.getEspecialidade() == null || dentista.getEspecialidade().getId() == null
+                || dentista.getEspecialidade().getId() == 0) {
+            throw new RegraNegocioException("Especialidade invalida");
+        }
+        if (dentista.getExpediente() == null || dentista.getExpediente().getId() == null
+                || dentista.getExpediente().getId() == 0) {
+            throw new RegraNegocioException("Expediente invalido");
+        }
     }
 }

@@ -6,7 +6,6 @@ import com.example.SCCO_MVC.exception.RegraNegocioException;
 import com.example.SCCO_MVC.model.entity.*;
 import com.example.SCCO_MVC.service.EspecialidadeService;
 import com.example.SCCO_MVC.service.ProcedimentoService;
-import com.example.SCCO_MVC.service.TratamentoService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
