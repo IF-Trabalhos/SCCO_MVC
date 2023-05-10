@@ -1,7 +1,6 @@
 package com.example.SCCO_MVC.api.controller;
 
 
-import com.example.SCCO_MVC.api.dto.TratamentoDTO;
 import com.example.SCCO_MVC.exception.RegraNegocioException;
 import com.example.SCCO_MVC.service.TratamentoService;
 import io.swagger.annotations.ApiOperation;

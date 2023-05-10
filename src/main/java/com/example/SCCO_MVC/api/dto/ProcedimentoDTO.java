@@ -12,11 +12,10 @@ import org.modelmapper.ModelMapper;
 public class ProcedimentoDTO {
     private Long id;
     private String nome;
-    private boolean status;
-    private double valor;
+    private Boolean status;
+    private Double valor;
 
     private Long especialidadeId;
-    private Long tratamentoId;
 
     public static ProcedimentoDTO create(Procedimento procedimento){
         ModelMapper modelMapper = new ModelMapper();

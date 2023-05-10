@@ -14,15 +14,13 @@ import java.util.Date;
 @AllArgsConstructor
 public class ConsultaDTO {
     private Long id;
-    private Long pacienteId;
-    private Long dentistaId;
-    private Long tratamentoId;
-
     private Double valorConsulta;
     private Date data;
     private Time horaInicio;
     private Time horaFim;
-    private Long agendaId;
+    private Long pacienteId;
+    private Long dentistaId;
+    private Long procedimentoId;
 
     public static ConsultaDTO create(Consulta consulta){
         ModelMapper modelMapper = new ModelMapper();

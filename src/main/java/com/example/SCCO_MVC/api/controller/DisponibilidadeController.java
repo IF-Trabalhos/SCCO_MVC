@@ -1,6 +1,5 @@
 package com.example.SCCO_MVC.api.controller;
 
-import com.example.SCCO_MVC.api.dto.DisponibilidadeDTO;
 import com.example.SCCO_MVC.exception.RegraNegocioException;
 import com.example.SCCO_MVC.service.DisponibilidadeService;
 

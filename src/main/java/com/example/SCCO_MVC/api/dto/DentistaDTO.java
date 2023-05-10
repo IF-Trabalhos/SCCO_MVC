@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -13,6 +15,11 @@ public class DentistaDTO {
     private Long id;
     private String cro;
     private String nome;
+    private String cpf;
+    private String telefone;
+    private Date dataDeNascimento;
+    private String rg;
+    private String email;
     private String logradouro;
     private String bairro;
     private String uf;
@@ -20,6 +27,8 @@ public class DentistaDTO {
     private String complemento;
     private String cep;
     private String numero;
+    private Long especialidadeId;
+    private Long expedienteId;
 
     public static DentistaDTO create(Dentista dentista){
         ModelMapper modelMapper = new ModelMapper();

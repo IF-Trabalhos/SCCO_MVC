@@ -1,25 +1,24 @@
 package com.example.SCCO_MVC.api.dto;
 
+import com.example.SCCO_MVC.model.entity.Convenio;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 
-import java.sql.Time;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class DiaDTO {
+public class ConvenioDTO {
     private Long id;
-
     private String nome;
-    private Time horaInicial;
-    private Time horaFinal;
-    private Long disponibilidadeId;
+    private String registroAns;
+    private String email;
+    private String telefone;
+    private Double desconto;
 
-    public static DiaDTO create(Dia dia){
+    public static ConvenioDTO create(Convenio convenio){
         ModelMapper modelMapper = new ModelMapper();
-        return modelMapper.map(dia, DiaDTO.class);
+        return modelMapper.map(convenio, ConvenioDTO.class);
     }
 }

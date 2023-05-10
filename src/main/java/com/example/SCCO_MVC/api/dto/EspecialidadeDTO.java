@@ -12,7 +12,7 @@ import org.modelmapper.ModelMapper;
 public class EspecialidadeDTO {
     private Long id;
     private String nome;
-    private boolean status;
+    private Boolean status;
 
     public static EspecialidadeDTO create(Especialidade especialidade){
         ModelMapper modelMapper = new ModelMapper();
