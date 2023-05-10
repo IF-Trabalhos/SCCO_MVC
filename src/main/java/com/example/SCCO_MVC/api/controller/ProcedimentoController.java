@@ -25,7 +25,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProcedimentoController {
     private final ProcedimentoService service;
-    private final TratamentoService tratamentoService;
     private final EspecialidadeService especialidadeService;
 
     @GetMapping
@@ -105,15 +104,6 @@ public class ProcedimentoController {
     public Procedimento converter (ProcedimentoDTO dto){
         ModelMapper modelMapper = new ModelMapper();
         Procedimento procedimento = modelMapper.map(dto, Procedimento.class);
-        if (dto.getTratamentoId() != null) {
-            Optional<Tratamento> tratamento = tratamentoService.getTratamentoById
-                    (dto.getTratamentoId());
-            if (!tratamento.isPresent()) {
-                procedimento.setTratamento(null);
-            } else {
-                procedimento.setTratamento(tratamento.get());
-            }
-        }
         if (dto.getEspecialidadeId() != null) {
             Optional<Especialidade> especialidade = especialidadeService.getEspecialidadeById(dto.getEspecialidadeId());
             if (!especialidade.isPresent()) {

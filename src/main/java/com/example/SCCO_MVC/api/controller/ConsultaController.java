@@ -7,6 +7,7 @@ import com.example.SCCO_MVC.model.entity.*;
 import com.example.SCCO_MVC.service.ConsultaService;
 import com.example.SCCO_MVC.service.DentistaService;
 import com.example.SCCO_MVC.service.PacienteService;
+import com.example.SCCO_MVC.service.ProcedimentoService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -26,14 +27,14 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ConsultaController {
     private final ConsultaService service;
-    private final TratamentoService tratamentoService;
+    private final ProcedimentoService procedimentoService;
     private final DentistaService dentistaService;
     private final PacienteService pacienteService;
 
     @GetMapping
     @ApiOperation("Retorna a lista de consultas no sistema")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "Lista de consultas retornado com sucesso"),
+            @ApiResponse(code = 200, message = "Lista de consultas retornadas com sucesso"),
             @ApiResponse(code = 500, message = "Ocorreu um erro ao buscar a lista de consultas")
     })
     public ResponseEntity get(){
@@ -44,8 +45,8 @@ public class ConsultaController {
     @GetMapping("/{id}")
     @ApiOperation("Obter detalhes de uma consulta")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "Consulta encontrado"),
-            @ApiResponse(code = 404, message = "Consulta não encontrado")
+            @ApiResponse(code = 200, message = "Consulta encontrada"),
+            @ApiResponse(code = 404, message = "Consulta não encontrada")
     })
     public ResponseEntity get(@PathVariable("id") Long id){
         Optional<Consulta> consultas= service.getConsultaById(id);
@@ -56,9 +57,9 @@ public class ConsultaController {
     }
 
     @PostMapping
-    @ApiOperation("Cadastrar novo consulta")
+    @ApiOperation("Cadastrar nova Consulta")
     @ApiResponses({
-            @ApiResponse(code = 201, message = "Consulta cadastrado com sucesso"),
+            @ApiResponse(code = 201, message = "Consulta cadastrada com sucesso"),
             @ApiResponse(code = 404, message = "Erro ao cadastrar consulta")
     })
     public ResponseEntity post(@RequestBody ConsultaDTO dto){
@@ -72,7 +73,7 @@ public class ConsultaController {
     }
 
     @PutMapping("{id}")
-    @ApiOperation("Atualiza Consulta")
+    @ApiOperation("Atualiza uma Consulta")
     public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody ConsultaDTO dto) {
         if (!service.getConsultaById(id).isPresent()) {
             return new ResponseEntity("Consulta não encontrada", HttpStatus.NOT_FOUND);
@@ -87,10 +88,10 @@ public class ConsultaController {
         }
     }
     @DeleteMapping("{id}")
-    @ApiOperation("Exclui um Consulta")
+    @ApiOperation("Exclui uma Consulta")
     @ApiResponses({
-            @ApiResponse(code = 204, message = "Consulta excluido com sucesso"),
-            @ApiResponse(code = 404, message = "Consulta não encontrado")
+            @ApiResponse(code = 204, message = "Consulta excluida com sucesso"),
+            @ApiResponse(code = 404, message = "Consulta não encontrada")
     })
     public ResponseEntity excluir(@PathVariable("id") @ApiParam("Id do Consulta") Long id) {
         Optional<Consulta> consulta = service.getConsultaById(id);
@@ -108,13 +109,12 @@ public class ConsultaController {
     public Consulta converter (ConsultaDTO dto){
         ModelMapper modelMapper = new ModelMapper();
         Consulta consulta = modelMapper.map(dto, Consulta.class);
-        if (dto.getTratamentoId() != null) {
-            Optional<Tratamento> tratamento = tratamentoService.getTratamentoById
-                    (dto.getTratamentoId());
-            if (!tratamento.isPresent()) {
-                consulta.setTratamento(null);
+        if (dto.getProcedimentoId() != null) {
+            Optional<Procedimento> procedimento = procedimentoService.getProcedimentoById(dto.getProcedimentoId());
+            if (!procedimento.isPresent()) {
+                consulta.setProcedimento(null);
             } else {
-                consulta.setTratamento(tratamento.get());
+                consulta.setProcedimento(procedimento.get());
             }
         }
         if (dto.getDentistaId() != null) {

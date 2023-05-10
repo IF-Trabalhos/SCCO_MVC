@@ -5,8 +5,9 @@ import com.example.SCCO_MVC.api.dto.DentistaDTO;
 import com.example.SCCO_MVC.exception.RegraNegocioException;
 import com.example.SCCO_MVC.model.entity.Dentista;
 import com.example.SCCO_MVC.model.entity.Endereco;
-import com.example.SCCO_MVC.service.DentistaService;
-import com.example.SCCO_MVC.service.EnderecoService;
+import com.example.SCCO_MVC.model.entity.Especialidade;
+import com.example.SCCO_MVC.model.entity.Expediente;
+import com.example.SCCO_MVC.service.*;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
@@ -27,6 +28,8 @@ import java.util.stream.Collectors;
 public class DentistaController {
     private final DentistaService service;
     private final EnderecoService enderecoService;
+    private final EspecialidadeService especialidadeService;
+    private final ExpedienteService expedienteService;
 
     @GetMapping
     @ApiOperation("Retorna a lista de dentistas no sistema")
@@ -110,6 +113,22 @@ public class DentistaController {
         Dentista dentista = modelMapper.map(dto, Dentista.class);
         Endereco endereco = modelMapper.map(dto, Endereco.class);
         dentista.setEndereco(endereco);
+        if (dto.getEspecialidadeId() != null) {
+            Optional<Especialidade> especialidade = especialidadeService.getEspecialidadeById(dto.getEspecialidadeId());
+            if (!especialidade.isPresent()) {
+                dentista.setEspecialidade(null);
+            } else {
+                dentista.setEspecialidade(especialidade.get());
+            }
+        }
+        if (dto.getExpedienteId() != null) {
+            Optional<Expediente> expediente = expedienteService.getExpedienteById(dto.getExpedienteId());
+            if (!expediente.isPresent()) {
+                dentista.setExpediente(null);
+            } else {
+                dentista.setExpediente(expediente.get());
+            }
+        }
         return dentista;
     }
 }
