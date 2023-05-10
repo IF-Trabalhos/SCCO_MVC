@@ -1,7 +1,6 @@
 package com.example.SCCO_MVC.service;
 
 import com.example.SCCO_MVC.exception.RegraNegocioException;
-import com.example.SCCO_MVC.model.entity.Dia;
 import com.example.SCCO_MVC.model.repository.DiaRepository;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;

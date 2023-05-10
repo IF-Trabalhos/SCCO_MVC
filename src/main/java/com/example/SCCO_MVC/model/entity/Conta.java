@@ -1,18 +1,27 @@
 package com.example.SCCO_MVC.model.entity;
 
-import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Tratamento {
+public class Conta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Date dataEmissao;
+    private Double valorTotal;
+
+    @ManyToOne
+    private Consulta consulta;
+
+    @ManyToOne
+    private Paciente paciente;
 }

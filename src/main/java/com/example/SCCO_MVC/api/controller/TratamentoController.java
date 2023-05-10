@@ -3,8 +3,6 @@ package com.example.SCCO_MVC.api.controller;
 
 import com.example.SCCO_MVC.api.dto.TratamentoDTO;
 import com.example.SCCO_MVC.exception.RegraNegocioException;
-import com.example.SCCO_MVC.model.entity.Paciente;
-import com.example.SCCO_MVC.model.entity.Tratamento;
 import com.example.SCCO_MVC.service.TratamentoService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

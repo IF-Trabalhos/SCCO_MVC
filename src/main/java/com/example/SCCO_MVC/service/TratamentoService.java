@@ -1,6 +1,5 @@
 package com.example.SCCO_MVC.service;
 
-import com.example.SCCO_MVC.model.entity.Tratamento;
 import com.example.SCCO_MVC.model.repository.TratamentoRepository;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;

@@ -1,7 +1,6 @@
 package com.example.SCCO_MVC.service;
 
 import com.example.SCCO_MVC.exception.RegraNegocioException;
-import com.example.SCCO_MVC.model.entity.Disponibilidade;
 import com.example.SCCO_MVC.model.repository.DisponibilidadeRepository;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;

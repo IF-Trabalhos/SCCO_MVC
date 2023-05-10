@@ -1,6 +1,5 @@
 package com.example.SCCO_MVC.api.dto;
 
-import com.example.SCCO_MVC.model.entity.Agenda;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

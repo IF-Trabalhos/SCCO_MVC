@@ -19,4 +19,6 @@ public class Dentista extends Pessoa {
     @ManyToOne
     private Especialidade especialidade;
 
+    @ManyToOne
+    private Expediente expediente;
 }
