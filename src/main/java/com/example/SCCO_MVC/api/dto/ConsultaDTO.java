@@ -16,8 +16,8 @@ public class ConsultaDTO {
     private Long id;
     private Double valorConsulta;
     private Date data;
-    private Time horaInicio;
-    private Time horaFim;
+    private Time horaInicial;
+    private Time horaFinal;
     private Long pacienteId;
     private Long dentistaId;
     private Long procedimentoId;
