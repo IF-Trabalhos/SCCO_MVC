@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("api/v1/dentistas")
 @RequiredArgsConstructor
+@CrossOrigin
 public class DentistaController {
     private final DentistaService service;
     private final EnderecoService enderecoService;

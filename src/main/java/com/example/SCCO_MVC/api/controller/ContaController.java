@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("api/v1/contas")
 @RequiredArgsConstructor
+@CrossOrigin
 public class ContaController {
     private final ContaService service;
 

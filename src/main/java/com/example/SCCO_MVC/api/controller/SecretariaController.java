@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1/secretarias")
 @RequiredArgsConstructor
 @Api("Api de Secretario(a)")
+@CrossOrigin
 public class SecretariaController {
     private final SecretariaService service;
     private final EnderecoService enderecoService;

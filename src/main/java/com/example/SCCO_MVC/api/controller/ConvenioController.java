@@ -22,6 +22,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("api/v1/convenios")
 @RequiredArgsConstructor
+@CrossOrigin
 public class ConvenioController {
     private final ConvenioService service;
 

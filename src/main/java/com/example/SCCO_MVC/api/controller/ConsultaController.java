@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("api/v1/consultas")
 @RequiredArgsConstructor
+@CrossOrigin
 public class ConsultaController {
     private final ConsultaService service;
     private final ProcedimentoService procedimentoService;

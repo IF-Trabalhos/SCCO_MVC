@@ -23,6 +23,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("api/v1/procedimentos")
 @RequiredArgsConstructor
+@CrossOrigin
 public class ProcedimentoController {
     private final ProcedimentoService service;
     private final EspecialidadeService especialidadeService;
