@@ -6,10 +6,11 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public interface ConsultaRepository extends JpaRepository<Consulta, Long> {
     @Query(value = "SELECT a FROM Consulta a WHERE a.dentista.id = :id")
-    List<Consulta> getConsultasByDentistaId(Long id);
+    Optional<Consulta> getConsultasByDentistaId(Long id);
     @Query(value = "SELECT ad FROM Consulta ad WHERE ad.data = :data")
-    List<Consulta> getConsultasByData(Date data);
+    Optional<Consulta> getConsultasByData(Date data);
 }
