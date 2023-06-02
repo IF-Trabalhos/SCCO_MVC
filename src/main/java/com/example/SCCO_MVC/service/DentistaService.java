@@ -3,7 +3,7 @@ package com.example.SCCO_MVC.service;
 import com.example.SCCO_MVC.exception.RegraNegocioException;
 import com.example.SCCO_MVC.model.entity.Dentista;
 import com.example.SCCO_MVC.model.repository.DentistaRepository;
-import jakarta.transaction.Transactional;
+import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,6 +43,14 @@ public class DentistaService {
         if (dentista.getNome() == null || dentista.getNome().trim().equals("")
                 || dentista.getNome().length() > 255) {
             throw new RegraNegocioException("Nome vazio ou invalido");
+        }
+        if (dentista.getEspecialidade() == null || dentista.getEspecialidade().getId() == null
+                || dentista.getEspecialidade().getId() == 0) {
+            throw new RegraNegocioException("Especialidade invalida");
+        }
+        if (dentista.getExpediente() == null || dentista.getExpediente().getId() == null
+                || dentista.getExpediente().getId() == 0) {
+            throw new RegraNegocioException("Expediente invalido");
         }
     }
 }

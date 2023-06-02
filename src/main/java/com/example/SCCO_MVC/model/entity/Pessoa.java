@@ -1,9 +1,11 @@
 package com.example.SCCO_MVC.model.entity;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Date;
 
 @Data
 @NoArgsConstructor
@@ -17,6 +19,11 @@ public abstract class Pessoa {
     private Long id;
 
     private String nome;
+    private String cpf;
+    private String telefone;
+    private Date dataDeNascimento;
+    private String rg;
+    private String email;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Endereco endereco;

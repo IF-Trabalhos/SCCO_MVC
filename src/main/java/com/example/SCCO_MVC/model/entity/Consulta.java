@@ -1,6 +1,6 @@
 package com.example.SCCO_MVC.model.entity;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -18,20 +18,17 @@ public class Consulta {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    private Paciente paciente;
-
-    @OneToOne
-    private Dentista dentista;
-
-    @OneToOne
-    private Tratamento tratamento;
-
-    @ManyToOne
-    private Agenda agenda;
-
     private Double valorConsulta;
     private Date data;
-    private Time horaInicio;
-    private Time horaFim;
+    private Time horaInicial;
+    private Time horaFinal;
+
+    @ManyToOne
+    private Paciente paciente;
+
+    @ManyToOne
+    private Dentista dentista;
+
+    @ManyToOne
+    private Procedimento procedimento;
 }
