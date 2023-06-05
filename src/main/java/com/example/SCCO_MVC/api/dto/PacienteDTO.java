@@ -6,12 +6,19 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 
+import java.util.Date;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class PacienteDTO {
     private Long id;
     private String nome;
+    private String cpf;
+    private String telefone;
+    private Date dataDeNascimento;
+    private String rg;
+    private String email;
     private String numProntuario;
     private String logradouro;
     private String bairro;
