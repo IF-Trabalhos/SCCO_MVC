@@ -70,6 +70,26 @@ public class ConsultaController {
         return ResponseEntity.ok(qtdConsultas);
     }
 
+
+    @GetMapping("/paciente/quantidade")
+    @ApiOperation("Retorna a quantidade de pacientes consultados no sistema")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Quantidade de pacientes consultados retornadas com sucesso"),
+            @ApiResponse(code = 500, message = "Ocorreu um erro ao buscar a quantiade de pacientes consultados")
+    })
+    public ResponseEntity<Integer> getQuantidadePacientes() {
+        Integer qtdConsultas = service.getConsultas().size();
+        Set<Paciente> pacientesUnicos = new HashSet<>();
+
+        for (Consulta consulta : service.getConsultas()){
+            pacientesUnicos.add(consulta.getPaciente());
+        }
+
+        int totalPacientes = pacientesUnicos.size();
+
+        return ResponseEntity.ok(totalPacientes);
+    }
+
     @PostMapping
     @ApiOperation("Cadastrar nova Consulta")
     @ApiResponses({
