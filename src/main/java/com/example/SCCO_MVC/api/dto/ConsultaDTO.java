@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 
 import java.sql.Time;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -15,7 +15,7 @@ import java.util.Date;
 public class ConsultaDTO {
     private Long id;
     private Double valorConsulta;
-    private Date data;
+    private LocalDate data;
     private Time horaInicial;
     private Time horaFinal;
     private Long pacienteId;
