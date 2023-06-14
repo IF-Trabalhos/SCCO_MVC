@@ -18,8 +18,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -55,6 +57,17 @@ public class ConsultaController {
             return  new ResponseEntity("Consulta não encontrada", HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(consultas.map(ConsultaDTO::create));
+    }
+
+    @GetMapping("/quantidade")
+    @ApiOperation("Retorna a quantidade de consultas no sistema")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Quantidade de consultas retornadas com sucesso"),
+            @ApiResponse(code = 500, message = "Ocorreu um erro ao buscar a quantiade de consultas")
+    })
+    public ResponseEntity<Integer> getQuantidadeConsultas() {
+        Integer qtdConsultas = service.getConsultas().size();
+        return ResponseEntity.ok(qtdConsultas);
     }
 
     @PostMapping

@@ -48,9 +48,5 @@ public class DentistaService {
                 || dentista.getEspecialidade().getId() == 0) {
             throw new RegraNegocioException("Especialidade invalida");
         }
-        if (dentista.getExpediente() == null || dentista.getExpediente().getId() == null
-                || dentista.getExpediente().getId() == 0) {
-            throw new RegraNegocioException("Expediente invalido");
-        }
     }
 }
