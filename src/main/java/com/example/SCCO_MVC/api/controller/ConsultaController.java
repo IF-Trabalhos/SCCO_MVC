@@ -90,6 +90,25 @@ public class ConsultaController {
         return ResponseEntity.ok(totalPacientes);
     }
 
+    @GetMapping("/valor")
+    @ApiOperation("Retorna o valor total das consultas no sistema")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Valor total retornado com sucesso"),
+            @ApiResponse(code = 500, message = "Ocorreu um erro ao buscar o valor total")
+    })
+    public ResponseEntity<Float> getValorTotal() {
+        Integer qtdConsultas = service.getConsultas().size();
+        float valorTotal = 0;
+
+        for (Consulta consulta : service.getConsultas()){
+            if (consulta.getValorConsulta() != null){
+                valorTotal += consulta.getValorConsulta();
+            }
+        }
+
+        return ResponseEntity.ok(valorTotal);
+    }
+
     @PostMapping
     @ApiOperation("Cadastrar nova Consulta")
     @ApiResponses({
