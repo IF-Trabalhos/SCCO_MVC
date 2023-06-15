@@ -1,8 +1,8 @@
 package com.example.SCCO_MVC.model.entity;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,4 +19,6 @@ public class Dentista extends Pessoa {
     @ManyToOne
     private Especialidade especialidade;
 
+    @ManyToOne
+    private Expediente expediente;
 }

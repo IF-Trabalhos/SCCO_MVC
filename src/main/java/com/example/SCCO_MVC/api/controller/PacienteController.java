@@ -7,6 +7,10 @@ import com.example.SCCO_MVC.model.entity.Endereco;
 import com.example.SCCO_MVC.model.entity.Paciente;
 import com.example.SCCO_MVC.service.EnderecoService;
 import com.example.SCCO_MVC.service.PacienteService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -20,18 +24,29 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("api/v1/pacientes")
 @RequiredArgsConstructor
-public class PacienteController {
+@CrossOrigin
+public class  PacienteController {
     private final PacienteService service;
     private final EnderecoService enderecoService;
 
     @GetMapping
+    @ApiOperation("Retorna a lista de pacientes no sistema")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Lista de pacientes retornado com sucesso"),
+            @ApiResponse(code = 500, message = "Ocorreu um erro ao buscar a lista de pacientes")
+    })
     public ResponseEntity get(){
         List<Paciente> pacientes = service.getPacientes();
         return ResponseEntity.ok(pacientes.stream().map(PacienteDTO::create).collect(Collectors.toList()));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity get(@PathVariable("id") Long id){
+    @ApiOperation("Obter detalhes de um paciente")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Paciente encontrado"),
+            @ApiResponse(code = 404, message = "Paciente não encontrado")
+    })
+    public ResponseEntity get(@PathVariable("id") @ApiParam("Id do Paciente") Long id){
         Optional<Paciente> pacientes = service.getPacienteById(id);
         if (!pacientes.isPresent()){
             return  new ResponseEntity("Paciente não encontrado", HttpStatus.NOT_FOUND);
@@ -40,6 +55,11 @@ public class PacienteController {
     }
 
     @PostMapping
+    @ApiOperation("Cadastrar novo paciente")
+    @ApiResponses({
+            @ApiResponse(code = 201, message = "Paciente cadastrado com sucesso"),
+            @ApiResponse(code = 404, message = "Erro ao cadastrar paciente")
+    })
     public ResponseEntity post(@RequestBody PacienteDTO dto){
         try{
             Paciente paciente = converter(dto);
@@ -53,6 +73,7 @@ public class PacienteController {
     }
 
     @PutMapping("{id}")
+    @ApiOperation("Atualiza um Paciente")
     public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody PacienteDTO dto) {
         if (!service.getPacienteById(id).isPresent()) {
             return new ResponseEntity("Paciente não encontrado", HttpStatus.NOT_FOUND);
@@ -67,7 +88,12 @@ public class PacienteController {
         }
     }
     @DeleteMapping("{id}")
-    public ResponseEntity excluir(@PathVariable("id") Long id) {
+    @ApiOperation("Exclui um Paciente")
+    @ApiResponses({
+            @ApiResponse(code = 204, message = "Paciente excluido com sucesso"),
+            @ApiResponse(code = 404, message = "Paciente não encontrado")
+    })
+    public ResponseEntity excluir(@PathVariable("id") @ApiParam("Id do Paciente") Long id) {
         Optional<Paciente> paciente = service.getPacienteById(id);
         if (!paciente.isPresent()) {
             return new ResponseEntity("Paciente não encontrado", HttpStatus.NOT_FOUND);

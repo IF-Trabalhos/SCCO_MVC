@@ -3,7 +3,7 @@ package com.example.SCCO_MVC.service;
 import com.example.SCCO_MVC.exception.RegraNegocioException;
 import com.example.SCCO_MVC.model.entity.Procedimento;
 import com.example.SCCO_MVC.model.repository.ProcedimentoRepository;
-import jakarta.transaction.Transactional;
+import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -46,10 +46,6 @@ public class ProcedimentoService {
         }
         if (procedimento.getEspecialidade() == null || procedimento.getEspecialidade().getId() == null
                 || procedimento.getEspecialidade().getId() == 0) {
-            throw new RegraNegocioException("Especialidade invalida");
-        }
-        if (procedimento.getTratamento() == null || procedimento.getTratamento().getId() == null
-                || procedimento.getTratamento().getId() == 0) {
             throw new RegraNegocioException("Especialidade invalida");
         }
     }

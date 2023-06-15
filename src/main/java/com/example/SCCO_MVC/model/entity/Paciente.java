@@ -1,6 +1,8 @@
 package com.example.SCCO_MVC.model.entity;
 
-import jakarta.persistence.Entity;
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,5 +15,8 @@ import lombok.NoArgsConstructor;
 public class Paciente extends Pessoa{
 
     private String numProntuario;
+
+    @ManyToOne
+    private Convenio convenio;
 
 }
