@@ -14,12 +14,13 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-import java.util.Optional;
+import java.time.LocalDate;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -55,6 +56,79 @@ public class ConsultaController {
             return  new ResponseEntity("Consulta não encontrada", HttpStatus.NOT_FOUND);
         }
         return ResponseEntity.ok(consultas.map(ConsultaDTO::create));
+    }
+
+    @GetMapping("/{dataInicial}/{dataFinal}")
+    @ApiOperation("Obter detalhes de uma consulta")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Consulta encontrada"),
+            @ApiResponse(code = 404, message = "Consulta não encontrada")
+    })
+    public ResponseEntity get(@PathVariable("dataInicial") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicial,
+                              @PathVariable("dataFinal") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFinal){
+        List<Consulta> consultas = service.getConsultaByDatas(dataInicial, dataFinal);
+        return ResponseEntity.ok(consultas.stream().map(ConsultaDTO::create).collect(Collectors.toList()));
+    }
+
+    @GetMapping("/quantidade/{dataInicial}/{dataFinal}")
+    @ApiOperation("Retorna a quantidade de consultas em um intervalo de tempo no sistema")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Quantidade de consultas retornadas com sucesso"),
+            @ApiResponse(code = 500, message = "Ocorreu um erro ao buscar a quantiade de consultas")
+    })
+    public ResponseEntity<Integer> getQuantidadeConsultasByData(@PathVariable("dataInicial")
+                                                                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                                                LocalDate dataInicial,
+                                                                @PathVariable("dataFinal")
+                                                                @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                                                LocalDate dataFinal) {
+        Integer qtdConsultas = service.getConsultaByDatas(dataInicial, dataFinal).size();
+        return ResponseEntity.ok(qtdConsultas);
+    }
+
+    @GetMapping("/paciente/quantidade/{dataInicial}/{dataFinal}")
+    @ApiOperation("Retorna a quantidade de pacientes consultados em um intervalo de tempo no sistema")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Quantidade de pacientes consultados retornadas com sucesso"),
+            @ApiResponse(code = 500, message = "Ocorreu um erro ao buscar a quantiade de pacientes consultados")
+    })
+    public ResponseEntity<Integer> getQuantidadePacientesByData(@PathVariable("dataInicial")
+                                                          @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                                          LocalDate dataInicial,
+                                                          @PathVariable("dataFinal")
+                                                          @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+                                                          LocalDate dataFinal) {
+        Set<Paciente> pacientesUnicos = new HashSet<>();
+
+        for (Consulta consulta : service.getConsultaByDatas(dataInicial, dataFinal)){
+            pacientesUnicos.add(consulta.getPaciente());
+        }
+
+        int totalPacientes = pacientesUnicos.size();
+
+        return ResponseEntity.ok(totalPacientes);
+    }
+
+    @GetMapping("/valor/{dataInicial}/{dataFinal}")
+    @ApiOperation("Retorna o valor total das consultas em um intervalo de tempo no sistema")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Valor total retornado com sucesso"),
+            @ApiResponse(code = 500, message = "Ocorreu um erro ao buscar o valor total")
+    })
+    public ResponseEntity<Float> getValorTotalByData(@PathVariable("dataInicial")
+                                               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataInicial,
+                                               @PathVariable("dataFinal")
+                                               @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate dataFinal) {
+
+        float valorTotal = 0;
+
+        for (Consulta consulta : service.getConsultaByDatas(dataInicial, dataFinal)){
+            if (consulta.getValorConsulta() != null){
+                valorTotal += consulta.getValorConsulta();
+            }
+        }
+
+        return ResponseEntity.ok(valorTotal);
     }
 
     @PostMapping

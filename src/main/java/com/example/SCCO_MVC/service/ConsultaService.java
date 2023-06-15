@@ -6,6 +6,7 @@ import com.example.SCCO_MVC.model.repository.ConsultaRepository;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -25,6 +26,10 @@ public class ConsultaService {
 
     public Optional<Consulta> getConsultaById(Long id){
         return this.repository.findById(id);
+    }
+
+    public List<Consulta> getConsultaByDatas(LocalDate dataInicial, LocalDate dataFinal){
+        return this.repository.getConsultasByIntervaloData(dataInicial, dataFinal);
     }
 
     @Transactional
