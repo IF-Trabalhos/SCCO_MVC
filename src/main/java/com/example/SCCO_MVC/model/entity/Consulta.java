@@ -6,8 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.sql.Time;
-import java.util.Date;
-import java.util.List;
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -19,7 +18,7 @@ public class Consulta {
     private Long id;
 
     private Double valorConsulta;
-    private Date data;
+    private LocalDate data;
     private Time horaInicial;
     private Time horaFinal;
 

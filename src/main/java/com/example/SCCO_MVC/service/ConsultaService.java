@@ -34,6 +34,7 @@ public class ConsultaService {
     public Optional<Consulta> getConsultaByData(Date data){
         return this.repository.getConsultasByData(data);
     }
+
     @Transactional
     public Consulta salvar(Consulta consulta){
         validar(consulta);
