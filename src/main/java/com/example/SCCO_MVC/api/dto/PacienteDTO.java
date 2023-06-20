@@ -6,7 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -16,7 +16,7 @@ public class PacienteDTO {
     private String nome;
     private String cpf;
     private String telefone;
-    private Date dataDeNascimento;
+    private LocalDate dataDeNascimento;
     private String rg;
     private String email;
     private String numProntuario;
