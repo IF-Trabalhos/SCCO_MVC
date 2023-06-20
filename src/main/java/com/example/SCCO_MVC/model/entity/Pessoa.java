@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -21,7 +21,7 @@ public abstract class Pessoa {
     private String nome;
     private String cpf;
     private String telefone;
-    private Date dataDeNascimento;
+    private LocalDate dataDeNascimento;
     private String rg;
     private String email;
 
