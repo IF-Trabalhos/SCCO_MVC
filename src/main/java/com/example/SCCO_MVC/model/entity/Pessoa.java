@@ -24,6 +24,7 @@ public abstract class Pessoa {
     private LocalDate dataDeNascimento;
     private String rg;
     private String email;
+    private boolean ativo;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Endereco endereco;
