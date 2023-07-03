@@ -26,7 +26,8 @@ public class DentistaService {
     public Optional<Dentista> getDentistaById(Long id){
         return this.repository.findById(id);
     }
-
+    public List<Dentista> getDentistaByAtivoTrue(){return this.repository.findAllByAtivoTrue();}
+    public int getNumDentistasAtivos(){return this.repository.countDentistasByAtivoTrue();}
     @Transactional
     public Dentista salvar(Dentista dentista){
         validar(dentista);

@@ -23,10 +23,12 @@ public class PacienteService {
         return this.repository.findAll();
     }
 
+    public List<Paciente> getPacientesByAtivoTrue(){return this.repository.findAllByAtivoTrue();}
 
     public Optional<Paciente> getPacienteById(Long id){
         return this.repository.findById(id);
     }
+    public int getNumPacientesAtivos(){return this.repository.countPacientesByAtivoTrue();}
     @Transactional
     public Paciente salvar(Paciente paciente) {
         validar(paciente);

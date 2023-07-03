@@ -2,11 +2,9 @@ package com.example.SCCO_MVC.api.controller;
 
 
 import com.example.SCCO_MVC.api.dto.DentistaDTO;
+import com.example.SCCO_MVC.api.dto.PacienteDTO;
 import com.example.SCCO_MVC.exception.RegraNegocioException;
-import com.example.SCCO_MVC.model.entity.Dentista;
-import com.example.SCCO_MVC.model.entity.Endereco;
-import com.example.SCCO_MVC.model.entity.Especialidade;
-import com.example.SCCO_MVC.model.entity.Expediente;
+import com.example.SCCO_MVC.model.entity.*;
 import com.example.SCCO_MVC.service.*;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -42,7 +40,25 @@ public class DentistaController {
         List<Dentista> dentistas = service.getDentistas();
         return ResponseEntity.ok(dentistas.stream().map(DentistaDTO::create).collect(Collectors.toList()));
     }
+    @GetMapping("/ativos")
+    @ApiOperation("Retorna a lista de pacientes ativos")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Lista de dentistas retornada com sucesso"),
+            @ApiResponse(code = 500, message = "Ocorreu um erro ao buscar a lista de dentistas")
+    })
+    public ResponseEntity getDentistasByAtivoTrue(){
+        List<Dentista> dentistas = service.getDentistaByAtivoTrue();
+        return ResponseEntity.ok(dentistas.stream().map(DentistaDTO::create).collect(Collectors.toList()));
+    }
 
+    @GetMapping
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Número de dentistas retornado com sucesso"),
+            @ApiResponse(code = 500, message = "Erro ao obter o número de dentistas ativos")
+    })
+    public int getNumDentistasAtivos(){
+        return service.getNumDentistasAtivos();
+    }
     @GetMapping("/{id}")
     @ApiOperation("Obter detalhes de um Dentista")
     @ApiResponses({
