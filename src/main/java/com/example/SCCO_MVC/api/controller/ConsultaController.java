@@ -19,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -146,7 +147,21 @@ public class ConsultaController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
+    @GetMapping("/dentista/{id}")
+    public ResponseEntity getConsultasByDentistaId(@PathVariable("id") Long id){
+        Optional<Consulta> consultas = service.getConsultaByDentistaId(id);
+        if (!consultas.isPresent()){
+            return new ResponseEntity("Consulta não encontrada", HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok(consultas.map(ConsultaDTO::create));
+    }
+    public  ResponseEntity getConsultasByData(@PathVariable("Data") Date data){
+        Optional<Consulta> consultas = service.getConsultaByData(data);
+        if(!consultas.isPresent()){
+            return new ResponseEntity("Consulta não encontrada",HttpStatus.NOT_FOUND);
+        }
+        return  ResponseEntity.ok(consultas.map(ConsultaDTO::create));
+    }
     @PutMapping("{id}")
     @ApiOperation("Atualiza uma Consulta")
     public ResponseEntity atualizar(@PathVariable("id") Long id, @RequestBody ConsultaDTO dto) {
