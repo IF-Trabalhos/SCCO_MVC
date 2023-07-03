@@ -9,4 +9,6 @@ import java.util.List;
 public interface PacienteRepository  extends JpaRepository<Paciente, Long> {
     List<Paciente> findAllByAtivoTrue();
 
+    int countPacientesByAtivoTrue();
+
 }
