@@ -66,5 +66,8 @@ public class ConsultaService {
                 || consulta.getProcedimento().getId() == 0) {
             throw new RegraNegocioException("Procedimento invalido");
         }
+        if (consulta.getHoraInicial().after(consulta.getHoraFinal())){
+            throw new RegraNegocioException("Data de inicio depois da data inicial");
+        }
     }
 }

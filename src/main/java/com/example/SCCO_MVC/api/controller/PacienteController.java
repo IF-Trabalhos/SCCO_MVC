@@ -50,7 +50,7 @@ public class  PacienteController {
         List<Paciente> pacientes = service.getPacientesByAtivoTrue();
         return ResponseEntity.ok(pacientes.stream().map(PacienteDTO::create).collect(Collectors.toList()));
     }
-    @GetMapping
+    @GetMapping("ativos/quantidade")
     @ApiResponses({
             @ApiResponse(code = 200, message = "Numero de pacientes retornado com sucesso"),
             @ApiResponse(code = 500, message = "Erro ao obter o numero de pacientes ativos")

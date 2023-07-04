@@ -48,5 +48,8 @@ public class ProcedimentoService {
                 || procedimento.getEspecialidade().getId() == 0) {
             throw new RegraNegocioException("Especialidade invalida");
         }
+        if (procedimento.getStatus() == null){
+            throw new RegraNegocioException("Campo status não selecionado");
+        }
     }
 }

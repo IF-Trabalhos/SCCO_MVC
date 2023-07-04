@@ -5,6 +5,7 @@ import com.example.SCCO_MVC.model.repository.PacienteRepository;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -49,6 +50,17 @@ public class PacienteService {
         if (paciente.getNome() == null || paciente.getNome().trim().equals("")
                 || paciente.getNome().length() > 255) {
             throw new RegraNegocioException("Nome vazio ou invalido");
+        }
+        if (paciente.getCpf().length() != 14){
+            throw new RegraNegocioException("CPF inválido, número de digitos incorreto");
+        }
+        if (paciente.getDataDeNascimento().getYear() < LocalDate.now().minusMonths(6).getYear()
+                || (paciente.getDataDeNascimento().getYear() == LocalDate.now().minusMonths(6).getYear()
+                && paciente.getDataDeNascimento().getMonthValue() > LocalDate.now().minusMonths(6).getMonthValue())){
+            throw new RegraNegocioException("Data de nascimento inválida, paciente com menos de 6 meses");
+        }
+        if (paciente.getRg().length() > 10 || paciente.getRg().trim().equals("") ){
+            throw new RegraNegocioException("Rg inválido, número de digitos maior que 10");
         }
     }
 }

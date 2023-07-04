@@ -6,6 +6,7 @@ import com.example.SCCO_MVC.model.repository.SecretariaRepository;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -38,7 +39,6 @@ public class SecretariaService {
         Objects.requireNonNull(secretaria.getId());
         this.repository.delete(secretaria);
     }
-
     public void validar(Secretaria secretaria){
         if (secretaria.getPis() == null || secretaria.getPis().trim().equals("")
                 || secretaria.getPis().length() > 11) {
@@ -47,6 +47,12 @@ public class SecretariaService {
         if (secretaria.getNome() == null || secretaria.getNome().trim().equals("")
                 || secretaria.getNome().length() > 255) {
             throw new RegraNegocioException("Nome vazio ou invalido");
+        }
+        if (secretaria.getCpf().length() != 14){
+            throw new RegraNegocioException("CPF inválido, número de digitos incorreto");
+        }
+        if (secretaria.getDataDeNascimento().getYear() > LocalDate.now().minusYears(18).getYear()){
+            throw new RegraNegocioException("Data de nascimento inválida, secretaria menor de idade");
         }
     }
 }

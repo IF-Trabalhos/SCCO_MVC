@@ -51,7 +51,7 @@ public class DentistaController {
         return ResponseEntity.ok(dentistas.stream().map(DentistaDTO::create).collect(Collectors.toList()));
     }
 
-    @GetMapping
+    @GetMapping("/ativos/quantidade")
     @ApiResponses({
             @ApiResponse(code = 200, message = "Número de dentistas retornado com sucesso"),
             @ApiResponse(code = 500, message = "Erro ao obter o número de dentistas ativos")
