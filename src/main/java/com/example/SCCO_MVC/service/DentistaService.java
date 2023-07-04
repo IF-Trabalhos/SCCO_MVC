@@ -6,6 +6,7 @@ import com.example.SCCO_MVC.model.repository.DentistaRepository;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -26,7 +27,8 @@ public class DentistaService {
     public Optional<Dentista> getDentistaById(Long id){
         return this.repository.findById(id);
     }
-
+    public List<Dentista> getDentistaByAtivoTrue(){return this.repository.findAllByAtivoTrue();}
+    public int getNumDentistasAtivos(){return this.repository.countDentistasByAtivoTrue();}
     @Transactional
     public Dentista salvar(Dentista dentista){
         validar(dentista);
@@ -47,6 +49,15 @@ public class DentistaService {
         if (dentista.getEspecialidade() == null || dentista.getEspecialidade().getId() == null
                 || dentista.getEspecialidade().getId() == 0) {
             throw new RegraNegocioException("Especialidade invalida");
+        }
+        if (dentista.getCro().length() != 7){
+            throw new RegraNegocioException("Cro inválido, diferente de 7 digitos");
+        }
+        if (dentista.getCpf().length() != 14){
+            throw new RegraNegocioException("CPF inválido, número de digitos incorreto");
+        }
+        if (dentista.getDataDeNascimento().getYear() > LocalDate.now().minusYears(18).getYear()){
+            throw new RegraNegocioException("Data de nascimento inválida, dentista menor de idade");
         }
     }
 }

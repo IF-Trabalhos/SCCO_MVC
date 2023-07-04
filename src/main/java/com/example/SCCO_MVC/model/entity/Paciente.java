@@ -15,7 +15,6 @@ import lombok.NoArgsConstructor;
 public class Paciente extends Pessoa{
 
     private String numProntuario;
-
     @ManyToOne
     private Convenio convenio;
 

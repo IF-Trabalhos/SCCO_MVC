@@ -28,6 +28,8 @@ public class SecretariaDTO {
     private String complemento;
     private String cep;
     private String numero;
+    private boolean ativo;
+
     public static SecretariaDTO create(Secretaria secretatia){
         ModelMapper modelMapper = new ModelMapper();
         SecretariaDTO dto = modelMapper.map(secretatia, SecretariaDTO.class);
@@ -38,6 +40,7 @@ public class SecretariaDTO {
         dto.complemento = secretatia.getEndereco().getComplemento();
         dto.cep = secretatia.getEndereco().getCep();
         dto.numero = secretatia.getEndereco().getNumero();
+        dto.ativo = secretatia.isAtivo();
         return dto;
     }
 }

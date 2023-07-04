@@ -9,10 +9,12 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.filter.OncePerRequestFilter;
 import com.example.SCCO_MVC.security.JwtAuthFilter;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -43,6 +45,27 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
         auth
                 .userDetailsService(usuarioService)
                 .passwordEncoder(passwordEncoder());
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.cors().and()
+                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.POST,"/api/v1/pacientes/**")
+                .hasAnyRole("USER", "ADMIN")
+                .antMatchers("/api/v1/clientesPF/**")
+                .hasAnyRole( "ADMIN")
+
+                .antMatchers(HttpMethod.POST, "/api/v1/usuarios/**")
+                .permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .addFilterBefore(jwtFilter(), UsernamePasswordAuthenticationFilter.class);
+        ;
     }
 
     @Override

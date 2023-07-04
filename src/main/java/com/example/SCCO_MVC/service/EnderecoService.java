@@ -28,9 +28,17 @@ public class EnderecoService {
             throw new RegraNegocioException("Bairro invalido ou vazio");
         }
         if (endereco.getCep() == null || endereco.getCep().trim().equals("")
-                || endereco.getCep().length() > 9) {
+                || endereco.getCep().length() != 9) {
             throw new RegraNegocioException("Cep invalido ou vazio");
         }
-
+        if (endereco.getNumero().length() > 10 || endereco.getNumero().length() < 1){
+            throw new RegraNegocioException("Número inválido");
+        }
+        if (endereco.getCidade().equals("") || endereco.getCidade().length() > 255){
+            throw new RegraNegocioException("Cidade inválida, campo vazio ou com digitos em excesso");
+        }
+        if (endereco.getUf().length() != 2){
+            throw new RegraNegocioException("UF inválida");
+        }
     }
 }

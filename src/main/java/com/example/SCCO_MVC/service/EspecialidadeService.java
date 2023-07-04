@@ -44,5 +44,8 @@ public class EspecialidadeService {
                 || especialidade.getNome().length() > 255) {
             throw new RegraNegocioException("Nome vazio ou invalido");
         }
+        if (especialidade.getStatus() == null){
+            throw new RegraNegocioException("Status da especialidade não selecionado");
+        }
     }
 }

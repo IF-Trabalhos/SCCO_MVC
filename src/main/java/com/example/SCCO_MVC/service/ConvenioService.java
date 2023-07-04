@@ -44,5 +44,11 @@ public class ConvenioService {
                 || convenio.getNome().length() > 255) {
             throw new RegraNegocioException("Nome vazio ou invalido");
         }
+        if (convenio.getEmail().length() > 150){
+            throw new RegraNegocioException("Email grande de mais");
+        }
+        if (convenio.getRegistroAns().length() != 8){
+            throw new RegraNegocioException("Registro ANS inválido");
+        }
     }
 }

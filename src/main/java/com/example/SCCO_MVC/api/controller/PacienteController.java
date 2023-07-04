@@ -40,6 +40,24 @@ public class  PacienteController {
         return ResponseEntity.ok(pacientes.stream().map(PacienteDTO::create).collect(Collectors.toList()));
     }
 
+    @GetMapping("/ativos")
+    @ApiOperation("Retorna a lista de pacientes ativos")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Lista de pacientes retornada com sucesso"),
+            @ApiResponse(code = 500, message = "Ocorreu um erro ao buscar a lista de pacientes")
+    })
+    public ResponseEntity getPacientesByAtivoTrue(){
+        List<Paciente> pacientes = service.getPacientesByAtivoTrue();
+        return ResponseEntity.ok(pacientes.stream().map(PacienteDTO::create).collect(Collectors.toList()));
+    }
+    @GetMapping("ativos/quantidade")
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "Numero de pacientes retornado com sucesso"),
+            @ApiResponse(code = 500, message = "Erro ao obter o numero de pacientes ativos")
+    })
+    public int getNumPacientesAtivos(){
+        return service.getNumPacientesAtivos();
+    }
     @GetMapping("/{id}")
     @ApiOperation("Obter detalhes de um paciente")
     @ApiResponses({

@@ -27,6 +27,7 @@ public class PacienteDTO {
     private String complemento;
     private String cep;
     private String numero;
+    private boolean ativo;
 
 
     public static PacienteDTO create(Paciente paciente){
@@ -40,6 +41,7 @@ public class PacienteDTO {
         dto.complemento = paciente.getEndereco().getComplemento();
         dto.cep = paciente.getEndereco().getCep();
         dto.numero = paciente.getEndereco().getNumero();
+        dto.ativo = paciente.isAtivo();
         return dto;
     }
 }
