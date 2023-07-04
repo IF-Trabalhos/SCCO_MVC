@@ -29,6 +29,7 @@ public class DentistaDTO {
     private String numero;
     private Long especialidadeId;
     private Long expedienteId;
+    private boolean ativo;
 
     public static DentistaDTO create(Dentista dentista){
         ModelMapper modelMapper = new ModelMapper();
@@ -40,6 +41,7 @@ public class DentistaDTO {
         dto.complemento = dentista.getEndereco().getComplemento();
         dto.cep = dentista.getEndereco().getCep();
         dto.numero = dentista.getEndereco().getNumero();
+        dto.ativo = dentista.isAtivo();
         return dto;
     }
 }
