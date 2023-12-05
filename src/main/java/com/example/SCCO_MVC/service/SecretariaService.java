@@ -1,12 +1,13 @@
 package com.example.SCCO_MVC.service;
 
-import com.example.SCCO_MVC.exception.RegraNegocioException;
-import com.example.SCCO_MVC.model.entity.Secretaria;
+import com.example.SCCO_MVC.domain.Secretaria;
+import com.example.SCCO_MVC.dto.SecretariaDTO;
+import com.example.SCCO_MVC.model.entity.SecretariaEntity;
 import com.example.SCCO_MVC.model.repository.SecretariaRepository;
-import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import javax.transaction.Transactional;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -14,45 +15,38 @@ import java.util.Optional;
 @Service
 public class SecretariaService {
 
-    private SecretariaRepository repository;
+    private final SecretariaRepository repository;
 
     public SecretariaService(SecretariaRepository repository){
         this.repository = repository;
     }
 
-    public List<Secretaria> getSecretarias(){
-        return this.repository.findAll();
+    public List<SecretariaDTO> get(){
+        List<SecretariaEntity> secretarias = this.repository.findAll();
+        List<SecretariaDTO> secretariasDTO = new java.util.ArrayList<>(Collections.emptyList());
+        for ( SecretariaEntity secretaria: secretarias ) {
+            secretariasDTO.add(SecretariaDTO.fromEntityToDTO(secretaria));
+        }
+        return secretariasDTO;
     }
 
-    public Optional<Secretaria> getSecretariaById(Long id){
-        return this.repository.findById(id);
+    public SecretariaDTO get(Long id){
+        Optional<SecretariaEntity> secretaria = this.repository.findById(id);
+        return secretaria.map(SecretariaDTO::fromEntityToDTO).orElse(null);
     }
 
     @Transactional
-    public Secretaria salvar(Secretaria secretaria){
-        validar(secretaria);
-        return this.repository.save(secretaria);
+    public SecretariaDTO save(SecretariaDTO dto){
+        Secretaria secretaria = dto.fromDTOToDomain();
+        secretaria.validate();
+        SecretariaEntity entity = this.repository.save(dto.fromDTOToEntity());
+        return SecretariaDTO.fromEntityToDTO(entity);
     }
 
     @Transactional
-    public void excluir(Secretaria secretaria){
-        Objects.requireNonNull(secretaria.getId());
-        this.repository.delete(secretaria);
-    }
-    public void validar(Secretaria secretaria){
-        if (secretaria.getPis() == null || secretaria.getPis().trim().equals("")
-                || secretaria.getPis().length() > 11) {
-            throw new RegraNegocioException("Numero de Pis vazio ou invalido");
-        }
-        if (secretaria.getNome() == null || secretaria.getNome().trim().equals("")
-                || secretaria.getNome().length() > 255) {
-            throw new RegraNegocioException("Nome vazio ou invalido");
-        }
-        if (secretaria.getCpf().length() != 14){
-            throw new RegraNegocioException("CPF inválido, número de digitos incorreto");
-        }
-        if (secretaria.getDataDeNascimento().getYear() > LocalDate.now().minusYears(18).getYear()){
-            throw new RegraNegocioException("Data de nascimento inválida, secretaria menor de idade");
-        }
+    public void delete(SecretariaDTO dto){
+        SecretariaEntity entity = dto.fromDTOToEntity();
+        Objects.requireNonNull(entity.getId());
+        this.repository.delete(entity);
     }
 }

@@ -1,11 +1,13 @@
 package com.example.SCCO_MVC.service;
 
-import com.example.SCCO_MVC.exception.RegraNegocioException;
-import com.example.SCCO_MVC.model.entity.Convenio;
+import com.example.SCCO_MVC.domain.Convenio;
+import com.example.SCCO_MVC.dto.ConvenioDTO;
+import com.example.SCCO_MVC.model.entity.ConvenioEntity;
 import com.example.SCCO_MVC.model.repository.ConvenioRepository;
-import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -13,42 +15,39 @@ import java.util.Optional;
 @Service
 public class ConvenioService {
 
-    private ConvenioRepository repository;
+    private final ConvenioRepository repository;
 
     public ConvenioService(ConvenioRepository repository){
         this.repository = repository;
     }
 
-    public List<Convenio> getConvenios(){
-        return this.repository.findAll();
+    public List<ConvenioDTO> get(){
+        List<ConvenioEntity> convenios= this.repository.findAll();
+        List<ConvenioDTO> conveniosDTO = new java.util.ArrayList<>(Collections.emptyList());
+        for ( ConvenioEntity convenio: convenios ) {
+            conveniosDTO.add(ConvenioDTO.fromEntityToDTO(convenio));
+        }
+
+        return conveniosDTO;
     }
 
-    public Optional<Convenio> getConvenioById(Long id){
-        return this.repository.findById(id);
+    public ConvenioDTO get(Long id){
+        Optional<ConvenioEntity> convenio = this.repository.findById(id);
+        return convenio.map(ConvenioDTO::fromEntityToDTO).orElse(null);
     }
 
     @Transactional
-    public Convenio salvar(Convenio convenio){
-        validar(convenio);
-        return this.repository.save(convenio);
+    public ConvenioDTO save(ConvenioDTO dto){
+        Convenio convenio = dto.fromDTOToDomain();
+        convenio.validate();
+        ConvenioEntity entity = this.repository.save(dto.fromDTOToEntity());
+        return ConvenioDTO.fromEntityToDTO(entity);
     }
 
     @Transactional
-    public void excluir(Convenio convenio){
-        Objects.requireNonNull(convenio.getId());
-        this.repository.delete(convenio);
-    }
-
-    public void validar(Convenio convenio){
-        if (convenio.getNome() == null || convenio.getNome().trim().equals("")
-                || convenio.getNome().length() > 255) {
-            throw new RegraNegocioException("Nome vazio ou invalido");
-        }
-        if (convenio.getEmail().length() > 150){
-            throw new RegraNegocioException("Email grande de mais");
-        }
-        if (convenio.getRegistroAns().length() != 8){
-            throw new RegraNegocioException("Registro ANS inválido");
-        }
+    public void delete(ConvenioDTO dto){
+        ConvenioEntity entity = dto.fromDTOToEntity();
+        Objects.requireNonNull(entity.getId());
+        this.repository.delete(entity);
     }
 }

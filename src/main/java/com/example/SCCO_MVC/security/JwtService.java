@@ -1,6 +1,6 @@
 package com.example.SCCO_MVC.security;
 
-import com.example.SCCO_MVC.model.entity.Usuario;
+import com.example.SCCO_MVC.model.entity.UsuarioEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -22,15 +22,14 @@ public class JwtService {
     @Value("${security.jwt.chave-assinatura}")
     private String chaveAssinatura;
 
-    public String gerarToken( Usuario usuario ){
+    public String gerarToken( UsuarioEntity usuarioEntity){
         long expString = Long.valueOf(expiracao);
         LocalDateTime dataHoraExpiracao = LocalDateTime.now().plusMinutes(expString);
         Instant instant = dataHoraExpiracao.atZone(ZoneId.systemDefault()).toInstant();
         Date data = Date.from(instant);
-        System.out.println(data);
         return Jwts
                 .builder()
-                .setSubject(usuario.getLogin())
+                .setSubject(usuarioEntity.getLogin())
                 .setExpiration(data)
                 .signWith( SignatureAlgorithm.HS512, chaveAssinatura )
                 .compact();
