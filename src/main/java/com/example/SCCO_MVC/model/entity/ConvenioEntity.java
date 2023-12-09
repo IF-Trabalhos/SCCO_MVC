@@ -23,5 +23,4 @@ public class ConvenioEntity {
     private String registroAns;
     private String email;
     private String telefone;
-    private Double desconto;
 }

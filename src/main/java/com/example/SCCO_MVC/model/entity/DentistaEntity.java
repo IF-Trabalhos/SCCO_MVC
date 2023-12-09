@@ -13,7 +13,6 @@ import lombok.NoArgsConstructor;
 public class DentistaEntity extends PessoaEntity {
 
     private String cro;
-
     @ManyToOne
     private EspecialidadeEntity especialidadeEntity;
 
