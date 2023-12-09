@@ -1,11 +1,13 @@
 package com.example.SCCO_MVC.service;
 
-import com.example.SCCO_MVC.exception.RegraNegocioException;
-import com.example.SCCO_MVC.model.entity.Expediente;
+import com.example.SCCO_MVC.domain.Expediente;
+import com.example.SCCO_MVC.dto.ExpedienteDTO;
+import com.example.SCCO_MVC.model.entity.ExpedienteEntity;
 import com.example.SCCO_MVC.model.repository.ExpedienteRepository;
-import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -13,38 +15,39 @@ import java.util.Optional;
 @Service
 public class ExpedienteService {
 
-    private ExpedienteRepository repository;
+    private final ExpedienteRepository repository;
 
     public ExpedienteService(ExpedienteRepository repository){
         this.repository = repository;
     }
 
-    public List<Expediente> getExpedientes(){
-        return this.repository.findAll();
+    public List<ExpedienteDTO> get(){
+        List<ExpedienteEntity> expedientes = this.repository.findAll();
+        List<ExpedienteDTO> expedientesDTO = new java.util.ArrayList<>(Collections.emptyList());
+        for ( ExpedienteEntity expediente: expedientes ) {
+            expedientesDTO.add(ExpedienteDTO.fromEntityToDTO(expediente));
+        }
+
+        return expedientesDTO;
     }
 
-    public Optional<Expediente> getExpedienteById(Long id){
-        return this.repository.findById(id);
+    public ExpedienteDTO get(Long id){
+        Optional<ExpedienteEntity> expediente = this.repository.findById(id);
+        return expediente.map(ExpedienteDTO::fromEntityToDTO).orElse(null);
     }
 
     @Transactional
-    public Expediente salvar(Expediente expediente){
-        validar(expediente);
-        return this.repository.save(expediente);
+    public ExpedienteDTO save(ExpedienteDTO dto){
+        Expediente expediente = dto.fromDTOToDomain();
+        expediente.validate();
+        ExpedienteEntity entity = this.repository.save(dto.fromDTOToEntity());
+        return ExpedienteDTO.fromEntityToDTO(entity);
     }
 
     @Transactional
-    public void excluir(Expediente expediente){
-        Objects.requireNonNull(expediente.getId());
-        this.repository.delete(expediente);
-    }
-
-    public void validar(Expediente expediente){
-        if (expediente.getHoraInicial() == null) {
-            throw new RegraNegocioException("Hora inicial invalida");
-        }
-        if (expediente.getHoraFinal() == null) {
-            throw new RegraNegocioException("Hora final invalida");
-        }
+    public void delete(ExpedienteDTO dto){
+        ExpedienteEntity entity = dto.fromDTOToEntity();
+        Objects.requireNonNull(entity.getId());
+        this.repository.delete(entity);
     }
 }

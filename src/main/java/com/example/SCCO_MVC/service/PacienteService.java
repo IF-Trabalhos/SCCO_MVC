@@ -1,11 +1,13 @@
 package com.example.SCCO_MVC.service;
-import com.example.SCCO_MVC.exception.RegraNegocioException;
-import com.example.SCCO_MVC.model.entity.Paciente;
+
+import com.example.SCCO_MVC.domain.Paciente;
+import com.example.SCCO_MVC.dto.PacienteDTO;
+import com.example.SCCO_MVC.model.entity.PacienteEntity;
 import com.example.SCCO_MVC.model.repository.PacienteRepository;
-import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import javax.transaction.Transactional;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -17,50 +19,43 @@ public class PacienteService {
 
     public PacienteService(PacienteRepository repository) {
         this.repository = repository;
-
     }
 
-    public List<Paciente> getPacientes() {
-        return this.repository.findAll();
+    public List<PacienteDTO> get(){
+        List<PacienteEntity> pacientes = this.repository.findAll();
+        List<PacienteDTO> pacientesDTO = new java.util.ArrayList<>(Collections.emptyList());
+        for ( PacienteEntity paciente: pacientes ) {
+            pacientesDTO.add(PacienteDTO.fromEntityToDTO(paciente));
+        }
+        return pacientesDTO;
     }
 
-    public List<Paciente> getPacientesByAtivoTrue(){return this.repository.findAllByAtivoTrue();}
-
-    public Optional<Paciente> getPacienteById(Long id){
-        return this.repository.findById(id);
+    public List<PacienteDTO> getAtivos(){
+        List<PacienteEntity> pacientes = this.repository.findAllByAtivoTrue();
+        List<PacienteDTO> pacientesDTO = new java.util.ArrayList<>(Collections.emptyList());
+        for ( PacienteEntity paciente: pacientes ) {
+            pacientesDTO.add(PacienteDTO.fromEntityToDTO(paciente));
+        }
+        return pacientesDTO;
     }
-    public int getNumPacientesAtivos(){return this.repository.countPacientesByAtivoTrue();}
+
+    public PacienteDTO get(Long id){
+        Optional<PacienteEntity> paciente = this.repository.findById(id);
+        return paciente.map(PacienteDTO::fromEntityToDTO).orElse(null);
+    }
+
     @Transactional
-    public Paciente salvar(Paciente paciente) {
-        validar(paciente);
-        return this.repository.save(paciente);
+    public PacienteDTO save(PacienteDTO dto){
+        Paciente paciente = dto.fromDTOToDomain();
+        paciente.validate();
+        PacienteEntity entity = this.repository.save(dto.fromDTOToEntity());
+        return PacienteDTO.fromEntityToDTO(entity);
     }
 
     @Transactional
-    public void excluir(Paciente paciente) {
-        Objects.requireNonNull(paciente.getId());
-        this.repository.delete(paciente);
-    }
-
-    public void validar(Paciente paciente) {
-        if (paciente.getNumProntuario() == null || paciente.getNumProntuario().trim().equals("")
-                || paciente.getNumProntuario().length() > 14) {
-            throw new RegraNegocioException("Numero de Prontuario vazio ou invalido");
-        }
-        if (paciente.getNome() == null || paciente.getNome().trim().equals("")
-                || paciente.getNome().length() > 255) {
-            throw new RegraNegocioException("Nome vazio ou invalido");
-        }
-        if (paciente.getCpf().length() != 14){
-            throw new RegraNegocioException("CPF inválido, número de digitos incorreto");
-        }
-        if (paciente.getDataDeNascimento().getYear() < LocalDate.now().minusMonths(6).getYear()
-                || (paciente.getDataDeNascimento().getYear() == LocalDate.now().minusMonths(6).getYear()
-                && paciente.getDataDeNascimento().getMonthValue() > LocalDate.now().minusMonths(6).getMonthValue())){
-            throw new RegraNegocioException("Data de nascimento inválida, paciente com menos de 6 meses");
-        }
-        if (paciente.getRg().length() > 10 || paciente.getRg().trim().equals("") ){
-            throw new RegraNegocioException("Rg inválido, número de digitos maior que 10");
-        }
+    public void delete(PacienteDTO dto){
+        PacienteEntity entity = dto.fromDTOToEntity();
+        Objects.requireNonNull(entity.getId());
+        this.repository.delete(entity);
     }
 }

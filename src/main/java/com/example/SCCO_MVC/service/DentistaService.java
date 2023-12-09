@@ -1,12 +1,13 @@
 package com.example.SCCO_MVC.service;
 
-import com.example.SCCO_MVC.exception.RegraNegocioException;
-import com.example.SCCO_MVC.model.entity.Dentista;
+import com.example.SCCO_MVC.domain.Dentista;
+import com.example.SCCO_MVC.dto.DentistaDTO;
+import com.example.SCCO_MVC.model.entity.DentistaEntity;
 import com.example.SCCO_MVC.model.repository.DentistaRepository;
 import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -20,44 +21,42 @@ public class DentistaService {
         this.repository = repository;
     }
 
-    public List<Dentista> getDentistas(){
-        return this.repository.findAll();
+    public List<DentistaDTO> getAtivos(){
+        List<DentistaEntity> dentistas = this.repository.findAllByAtivoTrue();
+        List<DentistaDTO> dentistasDTO = new java.util.ArrayList<>(Collections.emptyList());
+        for ( DentistaEntity dentista: dentistas ) {
+            dentistasDTO.add(DentistaDTO.fromEntityToDTO(dentista));
+        }
+        return dentistasDTO;
     }
 
-    public Optional<Dentista> getDentistaById(Long id){
-        return this.repository.findById(id);
+    public List<DentistaDTO> get(){
+        List<DentistaEntity> dentistas= this.repository.findAll();
+        List<DentistaDTO> dentistasDTO = new java.util.ArrayList<>(Collections.emptyList());
+        for ( DentistaEntity dentista: dentistas ) {
+            dentistasDTO.add(DentistaDTO.fromEntityToDTO(dentista));
+        }
+
+        return dentistasDTO;
     }
-    public List<Dentista> getDentistaByAtivoTrue(){return this.repository.findAllByAtivoTrue();}
-    public int getNumDentistasAtivos(){return this.repository.countDentistasByAtivoTrue();}
+
+    public DentistaDTO get(Long id){
+        Optional<DentistaEntity> dentista = this.repository.findById(id);
+        return dentista.map(DentistaDTO::fromEntityToDTO).orElse(null);
+    }
+
     @Transactional
-    public Dentista salvar(Dentista dentista){
-        validar(dentista);
-        return this.repository.save(dentista);
+    public DentistaDTO save(DentistaDTO dto){
+        Dentista dentista = dto.fromDTOToDomain();
+        dentista.validate();
+        DentistaEntity entity = this.repository.save(dto.fromDTOToEntity());
+        return DentistaDTO.fromEntityToDTO(entity);
     }
 
     @Transactional
-    public void excluir(Dentista dentista){
-        Objects.requireNonNull(dentista.getId());
-        this.repository.delete(dentista);
-    }
-
-    public void validar(Dentista dentista){
-        if (dentista.getNome() == null || dentista.getNome().trim().equals("")
-                || dentista.getNome().length() > 255) {
-            throw new RegraNegocioException("Nome vazio ou invalido");
-        }
-        if (dentista.getEspecialidade() == null || dentista.getEspecialidade().getId() == null
-                || dentista.getEspecialidade().getId() == 0) {
-            throw new RegraNegocioException("Especialidade invalida");
-        }
-        if (dentista.getCro().length() != 7){
-            throw new RegraNegocioException("Cro inválido, diferente de 7 digitos");
-        }
-        if (dentista.getCpf().length() != 14){
-            throw new RegraNegocioException("CPF inválido, número de digitos incorreto");
-        }
-        if (dentista.getDataDeNascimento().getYear() > LocalDate.now().minusYears(18).getYear()){
-            throw new RegraNegocioException("Data de nascimento inválida, dentista menor de idade");
-        }
+    public void delete(DentistaDTO dto){
+        DentistaEntity entity = dto.fromDTOToEntity();
+        Objects.requireNonNull(entity.getId());
+        this.repository.delete(entity);
     }
 }
