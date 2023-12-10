@@ -9,6 +9,7 @@ classDiagram
     +complemento: String
     +bairro: String
     +cep: String
+    +validar()
     }
 
     class Pessoa {
@@ -17,11 +18,13 @@ classDiagram
     +telefone: String
     +rg: String
     +dataNascimento: String
+    +validar()
     }
 
     class Secretaria {
     +salario: Double
     +pis: String
+    +validar()
     }
 
     class Convenio {
@@ -29,37 +32,27 @@ classDiagram
     +registroAns: String
     +email: String
     +telefone: String
-    +desconto: Double
     +validar()
     }
 
     class Paciente {
     +numProntuario: String
     +calcularGastos()
-    +classificarPaciente()
     +validar()
-    +gastosTotais: Double
     }
 
     class Consulta {
     +valorConsulta: Double
     +validar()
     +calculaValorConsulta()
-    -desconto: Double
+    +calulaDescontoConsulta()
     }
 
     class Dentista {
     +cro: String
-    +verificarDisponibilidade()
-    +calcularGanhos(): Double
-    }
-
-    class DentistaComissionado {
-    +percentualComissao: Double
-    }
-
-    class DentistaAssalariado {
-    +salarioFixo: Double
+    +calculaGanhos()
+    +calculaComissaoDentista()
+    +validar()
     }
 
     class Especialidade {
@@ -72,6 +65,7 @@ classDiagram
     +diaDaSemana: Date
     +horaInicial: Time
     +horaFinal: Time
+    +validar()
     }
 
     class Procedimento {
@@ -82,30 +76,23 @@ classDiagram
     }
 
     class Agenda {
-    +data: String
-    +horaInicial: String
-    +horaFinal: String
-    }
-
-    class Clinica {
-    +quantidadeConsultas()
-    +registrarConsulta(consulta: Consulta)
-    +registrarDesconto(desconto: Double)
-    +calcularLucro(): Double
+    +data: Date
+    +horaInicial: Time
+    +horaFinal: Time
+    +validar()
     }
 
 Pessoa *-- Endereco : 
 Secretaria --|> Pessoa : 
 Paciente --|> Pessoa : 
 Dentista --|> Pessoa : 
-DentistaComissionado --|> Dentista : 
-DentistaAssalariado --|> Dentista : 
-Paciente *-- Convenio : Possui
-Consulta --> Paciente : Associado
-Consulta --> Procedimento : Inclui
-Dentista -- Expediente : Trabalha
-Dentista --|> Especialidade : Possui
-Procedimento --|> Especialidade : Associado
+Paciente --> Convenio : Possui
+Consulta --> Paciente : Requer
+Consulta --> Procedimento : Possui
+Dentista --> Expediente : Possui
+Dentista --> Especialidade : Possui
+Procedimento --> Especialidade : Associado
 Consulta --> Agenda : Requer
 Consulta --> Dentista : Requer
+
 ```
