@@ -2,18 +2,13 @@ package com.example.SCCO_MVC.service;
 
 import com.example.SCCO_MVC.domain.Agenda;
 import com.example.SCCO_MVC.dto.AgendaDTO;
-import com.example.SCCO_MVC.dto.ConsultaDTO;
-import com.example.SCCO_MVC.domain.Consulta;
 import com.example.SCCO_MVC.model.entity.AgendaEntity;
-import com.example.SCCO_MVC.model.entity.ConsultaEntity;
 import com.example.SCCO_MVC.model.repository.AgendaRepository;
-import com.example.SCCO_MVC.model.repository.ConsultaRepository;
 import javax.transaction.Transactional;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;

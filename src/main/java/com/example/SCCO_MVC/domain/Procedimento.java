@@ -20,6 +20,9 @@ public class Procedimento {
                 || this.getNome().length() > 255) {
             throw new RegraNegocioException("Nome vazio ou invalido");
         }
+        if (this.valor <= 0) {
+            throw new RegraNegocioException("Valor invalido");
+        }
         if (this.getEspecialidade() == null) {
             throw new RegraNegocioException("Especialidade invalida");
         }

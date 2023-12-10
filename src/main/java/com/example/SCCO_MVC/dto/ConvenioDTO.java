@@ -16,7 +16,6 @@ public class ConvenioDTO {
     private String registroAns;
     private String email;
     private String telefone;
-    private Double desconto;
 
     public static ConvenioDTO fromEntityToDTO(ConvenioEntity convenioEntity){
         ModelMapper modelMapper = new ModelMapper();
