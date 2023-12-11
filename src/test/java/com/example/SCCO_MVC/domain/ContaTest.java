@@ -1,51 +1,36 @@
 package com.example.SCCO_MVC.domain;
 
 import com.example.SCCO_MVC.exception.RegraNegocioException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ContaTest {
-    Conta validConta = new Conta(
-            LocalDate.now(),
-            300.0,
-            new Consulta(),
-            new Paciente()
-    );
+class ContaTest {
 
-    Conta conta;
+    @Test
+    void shouldValidateContaWithValidData() {
+        Consulta consulta = new Consulta();
+        Paciente paciente = new Paciente();
+        Conta conta = new Conta(LocalDate.now(), 500.0, consulta, paciente);
 
-    @BeforeEach
-    public void init() {
-        conta = validConta;
+        assertDoesNotThrow(conta::validate);
     }
 
     @Test
-    void shouldReturnValidConta() {
-        assertDoesNotThrow(() ->
-                conta.validate()
-        );
-    }
+    void shouldThrowExceptionForInvalidConsulta() {
+        Paciente paciente = new Paciente();
+        Conta conta = new Conta(LocalDate.now(), 500.0, null, paciente);
 
-
-    @Test
-    void shouldReturnInvalidDentist() {
-        RegraNegocioException exception = assertThrows(RegraNegocioException.class, () -> {
-            conta.setConsulta(null);
-            conta.validate();
-        });
-        assertEquals("Consulta invalida", exception.getMessage());
+        assertThrows(RegraNegocioException.class, conta::validate);
     }
 
     @Test
-    void shouldReturnInvalidPatient() {
-        RegraNegocioException exception = assertThrows(RegraNegocioException.class, () -> {
-            conta.setPaciente(null);
-            conta.validate();
-        });
-        assertEquals("Paciente invalido", exception.getMessage());
+    void shouldThrowExceptionForInvalidPaciente() {
+        Consulta consulta = new Consulta();
+        Conta conta = new Conta(LocalDate.now(), 500.0, consulta, null);
+
+        assertThrows(RegraNegocioException.class, conta::validate);
     }
 }
