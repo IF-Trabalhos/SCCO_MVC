@@ -4,8 +4,10 @@ import com.example.SCCO_MVC.exception.RegraNegocioException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.tomcat.jni.Local;
 
 import java.sql.Time;
+import java.time.LocalTime;
 
 @Data
 @NoArgsConstructor
@@ -24,7 +26,8 @@ public class Expediente {
             throw new RegraNegocioException("Hora inicial não pode ser posterior à hora final");
         }
 
-        if (this.horaInicial.before(Time.valueOf("07:00")) || this.horaFinal.after(Time.valueOf("18:00"))) {
+        if (this.horaInicial.before(Time.valueOf(LocalTime.of(7,0))) ||
+                this.horaFinal.after(Time.valueOf(LocalTime.of(18,0)))) {
             throw new RegraNegocioException("O expediente deve estar no intervalo de 07:00 às 18:00");
         }
 

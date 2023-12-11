@@ -1,170 +1,199 @@
 package com.example.SCCO_MVC.domain;
 
-import com.example.SCCO_MVC.domain.*;
 import com.example.SCCO_MVC.exception.RegraNegocioException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
 class ConsultaTest {
+    Consulta validConsulta = new Consulta(
+            300.0,
+            new Paciente(),
+            new Dentista(),
+            (List<Procedimento>) new ArrayList(),
+            new Agenda()
+    );
 
     Consulta consulta;
 
     @BeforeEach
-    void setUp() {
-        consulta = new Consulta();
-        consulta.setValorConsulta(100.0);
-
-        Paciente pacienteValido = new Paciente();
-        Dentista dentistaValido = new Dentista();
-        Especialidade especialidade = new Especialidade();
-        Agenda agendaValida = new Agenda();
-        List<Procedimento> procedimentosValidos = new ArrayList<>();
-
-
-        procedimentosValidos.add(new Procedimento());
-
-        consulta.setPaciente(pacienteValido);
-        consulta.setDentista(dentistaValido);
-        consulta.setAgenda(agendaValida);
-        consulta.setProcedimentos(procedimentosValidos);
+    public void init() {
+        consulta = validConsulta;
     }
 
     @Test
-    void shouldValidateConsultaWithValidData() {
-        assertDoesNotThrow(() -> consulta.validate());
+    void shouldReturnValidConsulta() {
+        assertDoesNotThrow(() ->
+                consulta.validate()
+        );
     }
 
     @Test
-    void shouldThrowExceptionForInvalidConsultaValue() {
-        consulta.setValorConsulta(-10.0);
-        RegraNegocioException exception = assertThrows(RegraNegocioException.class, () -> consulta.validate());
-        assertEquals("Valor da consulta inválido", exception.getMessage());
+    void shouldReturnInvalidConsulta() {
+        RegraNegocioException exception
+                = assertThrows(RegraNegocioException.class, () -> {
+            consulta.setValorConsulta(-0.1);
+            consulta.validate();
+        });
+        assertEquals("Valor da consulta invalido", exception.getMessage());
     }
 
     @Test
-    void shouldThrowExceptionForInvalidDentist() {
-        consulta.setDentista(null);
-        RegraNegocioException exception = assertThrows(RegraNegocioException.class, () -> consulta.validate());
-        assertEquals("Dentista inválido", exception.getMessage());
+    void shouldReturnInvalidDentist() {
+        RegraNegocioException exception = assertThrows(RegraNegocioException.class, () -> {
+            consulta.setDentista(null);
+            consulta.validate();
+        });
+        assertEquals("Dentista invalido", exception.getMessage());
     }
 
     @Test
-    void shouldThrowExceptionForInvalidPatient() {
-        consulta.setPaciente(null);
-        RegraNegocioException exception = assertThrows(RegraNegocioException.class, () -> consulta.validate());
-        assertEquals("Paciente inválido", exception.getMessage());
+    void shouldReturnInvalidPatient() {
+        RegraNegocioException exception = assertThrows(RegraNegocioException.class, () -> {
+            consulta.setPaciente(null);
+            consulta.validate();
+        });
+        assertEquals("Paciente invalido", exception.getMessage());
     }
 
     @Test
-    void shouldThrowExceptionForInvalidAgenda() {
-        consulta.setAgenda(null);
-        RegraNegocioException exception = assertThrows(RegraNegocioException.class, () -> consulta.validate());
-        assertEquals("Agenda inválida", exception.getMessage());
+    void shouldReturnInvalidAgenda() {
+        RegraNegocioException exception = assertThrows(RegraNegocioException.class, () -> {
+            consulta.setAgenda(null);
+            consulta.validate();
+        });
+        assertEquals("Agenda invalida", exception.getMessage());
     }
 
     @Test
-    void shouldThrowExceptionForInvalidProcedimento() {
-        consulta.setProcedimentos(null);
-        RegraNegocioException exception = assertThrows(RegraNegocioException.class, () -> consulta.validate());
-        assertEquals("Procedimento inválido", exception.getMessage());
-    }
-
-    @Test
-    void shouldThrowExceptionForInvalidDentistSpeciality() {
-        List<Procedimento> procedimentos = consulta.getProcedimentos();
-        procedimentos.get(0).setEspecialidade(new Especialidade());
-        RegraNegocioException exception = assertThrows(RegraNegocioException.class, () -> consulta.validate());
-        assertEquals("Dentista com especialidade inválida", exception.getMessage());
+    void shouldReturnInvalidProcedimento() {
+        List<Procedimento> test = new ArrayList();
+        test.add(new Procedimento());
+        test.add(null);
+        RegraNegocioException exception = assertThrows(RegraNegocioException.class, () -> {
+            consulta.setProcedimentos(test);
+            consulta.validate();
+        });
+        assertEquals("Procedimento invalido", exception.getMessage());
     }
     @Test
-    void shouldCalculateDiscountForLimpezaDental() {
+    void shouldReturnInvalidEspecialidade() {
+        List<Procedimento> test = new ArrayList();
+        test.add(new Procedimento("Inválido",true,100.0 ,new Especialidade("Inválida", true)));
+        RegraNegocioException exception =
+                assertThrows(RegraNegocioException.class, () -> {
+                    consulta.setProcedimentos(test);
+                    consulta.validate();
+                });
+        assertEquals("Dentista com especialidade invalida", exception.getMessage());
+    }
+    @Test
+    void shouldReturn15Percent() {
         Procedimento procedimento =
                 new Procedimento("Limpeza Dental", true, 100.0, new Especialidade());
-        double desconto = consulta.calculateDiscountConvenience(procedimento);
-        assertEquals(0.15, desconto);
+
+        assertEquals(0.15, consulta.calculateDiscountConvenience(procedimento));
     }
 
     @Test
-    void shouldCalculateDiscountForExtracaoDeDente() {
+    void shouldReturn25Percent() {
         Procedimento procedimento =
-                new Procedimento("Extração de Dente", true, 200.0, new Especialidade());
-        double desconto = consulta.calculateDiscountConvenience(procedimento);
-        assertEquals(0.25, desconto);
+                new Procedimento("Extração de Dente", true, 100.0, new Especialidade());
+
+        assertEquals(0.25, consulta.calculateDiscountConvenience(procedimento));
     }
 
     @Test
-    void shouldCalculateDiscountForRestauracaoDentaria() {
+    void shouldReturn20Percent() {
         Procedimento procedimento =
-                new Procedimento("Restauração Dentária", true, 150.0, new Especialidade());
-        double desconto = consulta.calculateDiscountConvenience(procedimento);
-        assertEquals(0.20, desconto);
+                new Procedimento("Restauração Dentária", true, 100.0, new Especialidade());
+
+        assertEquals(0.20, consulta.calculateDiscountConvenience(procedimento));
     }
 
     @Test
-    void shouldCalculateDiscountForTratamentoDeCanal() {
+    void shouldReturn30Percent() {
         Procedimento procedimento =
-                new Procedimento("Tratamento de Canal",true ,300.0, new Especialidade());
-        double desconto = consulta.calculateDiscountConvenience(procedimento);
-        assertEquals(0.30, desconto);
+                new Procedimento("Tratamento de Canal", true, 100.0, new Especialidade());
+
+        assertEquals(0.30, consulta.calculateDiscountConvenience(procedimento));
     }
 
     @Test
-    void shouldCalculateDiscountForImplanteDentario() {
+    void shouldReturn40Percent() {
         Procedimento procedimento =
-                new Procedimento("Implante Dentário",true, 400.0,new Especialidade());
-        double desconto = consulta.calculateDiscountConvenience(procedimento);
-        assertEquals(0.40, desconto);
+                new Procedimento("Implante Dentário", true, 100.0, new Especialidade());
+
+        assertEquals(0.40, consulta.calculateDiscountConvenience(procedimento));
     }
 
     @Test
-    void shouldCalculateDiscountForClareamentoDental() {
+    void shouldReturn10Percent() {
         Procedimento procedimento =
-                new Procedimento("Clareamento Dental",true, 120.0, new Especialidade());
-        double desconto = consulta.calculateDiscountConvenience(procedimento);
-        assertEquals(0.10, desconto);
+                new Procedimento("Clareamento Dental", true, 100.0, new Especialidade());
+
+        assertEquals(0.10, consulta.calculateDiscountConvenience(procedimento));
     }
 
     @Test
-    void shouldCalculateDiscountForOrtodontia() {
+    void shouldReturn35Percent() {
         Procedimento procedimento =
-                new Procedimento("Ortodontia", true,250.0, new Especialidade());
-        double desconto = consulta.calculateDiscountConvenience(procedimento);
-        assertEquals(0.35, desconto);
+                new Procedimento("Ortodontia", true, 100.0, new Especialidade());
+        assertEquals(0.35, consulta.calculateDiscountConvenience(procedimento));
     }
 
     @Test
-    void shouldCalculateDiscountForProstodontia() {
-        Procedimento procedimento = new Procedimento("Prostodontia",true ,500.0, new Especialidade());
-        double desconto = consulta.calculateDiscountConvenience(procedimento);
-        assertEquals(0.50, desconto);
-    }
-
-    @Test
-    void shouldCalculateDiscountForCirurgiaBucomaxilofacial() {
+    void shouldReturn50Percent() {
         Procedimento procedimento =
-                new Procedimento("Cirurgia Bucomaxilofacial",true ,300.0, new Especialidade());
-        double desconto = consulta.calculateDiscountConvenience(procedimento);
-        assertEquals(0.20, desconto);
+                new Procedimento("Prostodontia", true, 100.0, new Especialidade());
+        assertEquals(0.50, consulta.calculateDiscountConvenience(procedimento));
     }
 
     @Test
-    void shouldCalculateDiscountForPeriodontia() {
+    void shouldReturn20_2Percent() {
         Procedimento procedimento =
-                new Procedimento("Periodontia",true ,180.0, new Especialidade());
-        double desconto = consulta.calculateDiscountConvenience(procedimento);
-        assertEquals(0.15, desconto);
+                new Procedimento("Cirurgia Bucomaxilofacial", true, 100.0, new Especialidade());
+        assertEquals(0.20, consulta.calculateDiscountConvenience(procedimento));
     }
 
     @Test
-    void shouldCalculateDefaultDiscount() {
+    void shouldReturn15_2Percent() {
         Procedimento procedimento =
-                new Procedimento("Procedimento Desconhecido",true ,150.0, new Especialidade());
-        double desconto = consulta.calculateDiscountConvenience(procedimento);
-        assertEquals(0.0, desconto);
+                new Procedimento("Periodontia", true, 100.0, new Especialidade());
+        assertEquals(0.15, consulta.calculateDiscountConvenience(procedimento));
+    }
+
+    @Test
+    void shouldSetConsultValueWithConvenioDiscount() {
+        List<Procedimento> procedimentos =
+                new ArrayList<>();
+        Procedimento procedimento =
+                new Procedimento("Limpeza Dental", true, 100.0, new Especialidade());
+        Convenio convenio =
+                new Convenio("Limpeza", "01", "limpeza@gmail.com", "32999999999");
+        Paciente paciente = new Paciente("1", convenio);
+        consulta.setPaciente(paciente);
+        consulta.setProcedimentos(procedimentos);
+        consulta.calculateConsultValue();
+        assertEquals(300.0, consulta.getValorConsulta());
+    }
+
+    @Test
+    void shouldSetConsultValueWithoutConvenioDiscount() {
+        List<Procedimento> procedimentos =
+                new ArrayList<>();
+        Procedimento procedimento =
+                new Procedimento("Limpeza Dental", true, 100.0, new Especialidade());
+        consulta.setProcedimentos(procedimentos);
+        consulta.calculateConsultValue();
+        assertEquals(300.0, consulta.getValorConsulta());
     }
 }

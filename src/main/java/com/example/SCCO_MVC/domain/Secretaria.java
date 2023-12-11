@@ -20,13 +20,6 @@ public class Secretaria extends Pessoa {
                 || this.getPis().length() > 11) {
             throw new RegraNegocioException("Numero de Pis vazio ou invalido");
         }
-        if (this.getNome() == null || this.getNome().trim().equals("")
-                || this.getNome().length() > 255) {
-            throw new RegraNegocioException("Nome vazio ou invalido");
-        }
-        if (this.getCpf().length() != 14){
-            throw new RegraNegocioException("CPF inválido, número de digitos incorreto");
-        }
         if (this.getDataDeNascimento().getYear() > LocalDate.now().minusYears(18).getYear()){
             throw new RegraNegocioException("Data de nascimento inválida, secretaria menor de idade");
         }

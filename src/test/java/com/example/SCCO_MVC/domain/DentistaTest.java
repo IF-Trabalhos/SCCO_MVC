@@ -1,6 +1,7 @@
 package com.example.SCCO_MVC.domain;
 
 import com.example.SCCO_MVC.exception.RegraNegocioException;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
@@ -11,58 +12,63 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class DentistaTest {
 
-    @Test
-    void shouldValidateDentistaWithValidData() {
-        Dentista dentista = new Dentista("1234567", new Especialidade(), new ArrayList<>());
-        dentista.setNome("Nome");
-        dentista.setCpf("123.456.789-00");
-        dentista.setTelefone("12345678");
-        dentista.setDataDeNascimento(LocalDate.of(1990, 1, 1));
-        dentista.setRg("123456789");
-        dentista.setEmail("email@example.com");
+    Dentista validDentista =
+            new Dentista("1234567",
+                    new Especialidade(),
+                    (List<Expediente>) new ArrayList());
+
+
+    Dentista dentista;
+    @BeforeEach
+    public void init() {
+        dentista = validDentista;
+        dentista.setNome("Pessoa");
+        dentista.setCpf("123.456.678-90");
+        dentista.setTelefone("32999999999");
+        dentista.setDataDeNascimento(LocalDate.now().minusYears(20));
+        dentista.setRg("124456778");
+        dentista.setEmail("pessoa@gmail.com");
         dentista.setAtivo(true);
         dentista.setEndereco(new Endereco());
-
-        assertDoesNotThrow(dentista::validate);
     }
-
     @Test
-    void shouldThrowExceptionForInvalidEspecialidade() {
-        Dentista dentista = new Dentista("1234567", null, new ArrayList<>());
-        assertThrows(RegraNegocioException.class, dentista::validate);
+    void shouldReturnValidDentista() {
+        assertDoesNotThrow(() -> dentista.validate());
     }
-
     @Test
-    void shouldThrowExceptionForInvalidCroLength() {
-        Dentista dentista = new Dentista("123456", new Especialidade(), new ArrayList<>());
-        assertThrows(RegraNegocioException.class, dentista::validate);
+    void shouldReturnInvalidDentistaEspecialidade(){
+        RegraNegocioException exception =
+                assertThrows(RegraNegocioException.class, () -> {
+                    dentista.setEspecialidade(null);
+                    dentista.validate();
+                });
+        assertEquals("Especialidade inválida", exception.getMessage());
     }
-
     @Test
-    void shouldThrowExceptionForInvalidCroDigits() {
-        Dentista dentista = new Dentista("1a34567", new Especialidade(), new ArrayList<>());
-        assertThrows(RegraNegocioException.class, dentista::validate);
+    void shouldReturnInvalidDentistaCro() {
+        RegraNegocioException exception =
+                assertThrows(RegraNegocioException.class, () -> {
+                    dentista.setCro("123456");
+                    dentista.validate();
+                });
+        assertEquals("Cro inválido, diferente de 7 dígitos", exception.getMessage());
     }
-
     @Test
-    void shouldThrowExceptionForDentistaUnder18YearsOld() {
-        Dentista dentista = new Dentista("1234567", new Especialidade(), new ArrayList<>());
-        dentista.setDataDeNascimento(LocalDate.now().minusYears(17));
-        assertThrows(RegraNegocioException.class, dentista::validate);
+    void shouldReturnInvalidDentistaCroDigitsInvalid(){
+        RegraNegocioException exception =
+                assertThrows(RegraNegocioException.class, () -> {
+                    dentista.setCro("@@@@@@@");
+                    dentista.validate();
+                });
+        assertEquals("CRO inválido, deve conter apenas números", exception.getMessage());
     }
-
-    @Test
-    void shouldCalculateEarningsForDentist() {
-        Consulta consulta1 = new Consulta(300.0, new Paciente(), new Dentista(),
-                new ArrayList<>(), new Agenda());
-        Consulta consulta2 = new Consulta(500.0, new Paciente(), new Dentista(),
-                new ArrayList<>(), new Agenda());
-        List<Consulta> consultas = List.of(consulta1, consulta2);
-
-        Dentista dentista =
-                new Dentista("1234567", new Especialidade("Ortodontia",true), new ArrayList<>());
-        double expectedEarnings = (300.0 * 0.65) + (500.0 * 0.65);
-
-        assertEquals(expectedEarnings, dentista.calculateEarnings(consultas));
+   @Test
+    void shouldReturnInvalidDentistaUnderage() {
+        RegraNegocioException exception =
+                assertThrows(RegraNegocioException.class, () -> {
+                    dentista.setDataDeNascimento(LocalDate.now().minusYears(17));
+                    dentista.validate();
+                });
+        assertEquals("Data de nascimento inválida, dentista menor de idade", exception.getMessage());
     }
 }

@@ -25,10 +25,10 @@ public class Agenda {
             throw new RegraNegocioException("Data inválida ou anterior à data atual");
         }
         if (this.getHoraInicial() == null) {
-            throw new RegraNegocioException("Horário inicial ou final inválido");
+            throw new RegraNegocioException("Horário inicial inválido");
         }
         if (this.getHoraFinal() == null){
-            throw new RegraNegocioException("Horário inicial ou final inválido");
+            throw new RegraNegocioException("Horário Final inválido");
         }
 
         LocalTime horaInicialLocalTime = this.getHoraInicial().toLocalTime();
